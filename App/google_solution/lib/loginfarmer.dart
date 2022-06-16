@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const loginFarmer());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class loginFarmer extends StatelessWidget {
+  const loginFarmer({Key? key}) : super(key: key);
 
   static const String _title = 'Blah Blah Blah';
 
@@ -68,9 +68,9 @@ class MyStatelessWidget extends StatelessWidget {
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         colors: <Color>[
-                          Color(0xFF0DA155),
-                          Color(0xFF19D2A1),
-                          Color(0xFF42F581),
+                          Color.fromARGB(255, 0, 0, 0),
+                          Color.fromARGB(255, 0, 0, 0),
+                          Color.fromARGB(255, 0, 0, 0),
                         ],
                       ),
                     ),
