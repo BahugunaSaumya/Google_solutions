@@ -38,10 +38,13 @@ class MyStatelessWidget extends StatelessWidget {
               height: 30.0,
               child: const TextField(
                 obscureText: false,
+                maxLines: 1,
                 style:
                     TextStyle(fontSize: 15.0, height: 1.0, color: Colors.black),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
+                  isDense: true,
+                  contentPadding: EdgeInsets.fromLTRB(5.0, 12.0, 5.0, 12.0),
                   labelText: 'Username',
                 ),
               )),
@@ -50,11 +53,14 @@ class MyStatelessWidget extends StatelessWidget {
               width: 180.0,
               height: 30.0,
               child: const TextField(
+                maxLines: 1,
                 obscureText: true,
                 style:
                     TextStyle(fontSize: 15.0, height: 1.0, color: Colors.black),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
+                  isDense: true,
+                  contentPadding: EdgeInsets.fromLTRB(5.0, 12.0, 5.0, 12.0),  
                   labelText: 'Password',
                 ),
               )),
