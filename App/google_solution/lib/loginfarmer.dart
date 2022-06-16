@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'new_farmers.dart';
 
 void main() {
   runApp(const loginFarmer());
@@ -44,7 +45,7 @@ class MyStatelessWidget extends StatelessWidget {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   isDense: true,
-                  contentPadding: EdgeInsets.fromLTRB(5.0, 12.0, 5.0, 12.0),
+                  contentPadding: EdgeInsets.fromLTRB(7.0, 9.0, 7.0, 9.0),
                   labelText: 'Username',
                 ),
               )),
@@ -60,7 +61,7 @@ class MyStatelessWidget extends StatelessWidget {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   isDense: true,
-                  contentPadding: EdgeInsets.fromLTRB(5.0, 12.0, 5.0, 12.0),
+                  contentPadding: EdgeInsets.fromLTRB(7.0, 9.0, 7.0, 9.0),
                   labelText: 'Password',
                 ),
               )),
@@ -93,6 +94,21 @@ class MyStatelessWidget extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          const SizedBox(height: 50),
+          TextButton(
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+              primary: Colors.blue,
+              textStyle: const TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => new_farmers()),
+              );
+            },
+            child: const Text('Create a new account'),
           ),
         ],
       ),
