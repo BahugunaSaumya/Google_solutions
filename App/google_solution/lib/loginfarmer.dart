@@ -1,11 +1,13 @@
+import 'package:dairyapp/home_screens/main_view.dart';
 import 'package:flutter/material.dart';
+import 'new_farmers.dart';
 
 void main() {
   runApp(const loginFarmer());
 }
 
 class loginFarmer extends StatelessWidget {
-  const loginFarmer({Key? key}) : super(key: key);
+  const loginFarmer({Key key}) : super(key: key);
 
   static const String _title = 'Blah Blah Blah';
 
@@ -22,7 +24,7 @@ class loginFarmer extends StatelessWidget {
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({Key? key}) : super(key: key);
+  const MyStatelessWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class MyStatelessWidget extends StatelessWidget {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   isDense: true,
-                  contentPadding: EdgeInsets.fromLTRB(5.0, 12.0, 5.0, 12.0),
+                  contentPadding: EdgeInsets.fromLTRB(7.0, 9.0, 7.0, 9.0),
                   labelText: 'Username',
                 ),
               )),
@@ -60,7 +62,7 @@ class MyStatelessWidget extends StatelessWidget {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   isDense: true,
-                  contentPadding: EdgeInsets.fromLTRB(5.0, 12.0, 5.0, 12.0),
+                  contentPadding: EdgeInsets.fromLTRB(7.0, 9.0, 7.0, 9.0),
                   labelText: 'Password',
                 ),
               )),
@@ -88,11 +90,29 @@ class MyStatelessWidget extends StatelessWidget {
                     primary: Colors.white,
                     textStyle: const TextStyle(fontSize: 16),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => MainView()));
+                  },
                   child: const Text('Login'),
                 ),
               ],
             ),
+          ),
+          const SizedBox(height: 50),
+          TextButton(
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+              primary: Colors.blue,
+              textStyle: const TextStyle(fontSize: 16),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => new_farmers()),
+              );
+            },
+            child: const Text('Create a new account'),
           ),
         ],
       ),
