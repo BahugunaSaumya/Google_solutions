@@ -1,3 +1,4 @@
+import 'package:dairyapp/home_screens/main_view.dart';
 import 'package:flutter/material.dart';
 import 'new_farmers.dart';
 
@@ -6,7 +7,7 @@ void main() {
 }
 
 class loginFarmer extends StatelessWidget {
-  const loginFarmer({Key? key}) : super(key: key);
+  const loginFarmer({Key key}) : super(key: key);
 
   static const String _title = 'Blah Blah Blah';
 
@@ -23,7 +24,7 @@ class loginFarmer extends StatelessWidget {
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({Key? key}) : super(key: key);
+  const MyStatelessWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +90,10 @@ class MyStatelessWidget extends StatelessWidget {
                     primary: Colors.white,
                     textStyle: const TextStyle(fontSize: 16),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => MainView()));
+                  },
                   child: const Text('Login'),
                 ),
               ],

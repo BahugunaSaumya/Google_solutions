@@ -4,17 +4,17 @@ import 'logincustomer.dart';
 import 'loginfarmer.dart';
 
 class MyElevatedButton extends StatelessWidget {
-  final BorderRadiusGeometry? borderRadius;
-  final double? width;
+  final BorderRadiusGeometry borderRadius;
+  final double width;
   final double height;
   final Gradient gradient;
-  final VoidCallback? onPressed;
+  final VoidCallback onPressed;
   final Widget child;
 
   const MyElevatedButton({
-    Key? key,
-    required this.onPressed,
-    required this.child,
+    Key key,
+    this.onPressed,
+    this.child,
     this.borderRadius,
     this.width,
     this.height = 44.0,
@@ -44,12 +44,14 @@ class MyElevatedButton extends StatelessWidget {
   }
 }
 
+class required {}
+
 void main() {
   runApp(const landing());
 }
 
 class landing extends StatelessWidget {
-  const landing({Key? key}) : super(key: key);
+  const landing({Key key}) : super(key: key);
 
   static const String _title = 'Blah Blah Blah';
 
@@ -66,7 +68,7 @@ class landing extends StatelessWidget {
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({Key? key}) : super(key: key);
+  const MyStatelessWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

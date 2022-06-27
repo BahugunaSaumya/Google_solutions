@@ -7,7 +7,7 @@ void main() {
 }
 
 class loginCustomer extends StatelessWidget {
-  const loginCustomer({Key? key}) : super(key: key);
+  const loginCustomer({Key key}) : super(key: key);
 
   static const String _title = 'Blah Blah Blah';
 
@@ -24,7 +24,7 @@ class loginCustomer extends StatelessWidget {
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({Key? key}) : super(key: key);
+  const MyStatelessWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
