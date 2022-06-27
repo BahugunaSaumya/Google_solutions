@@ -3,12 +3,55 @@ import 'package:flutter/material.dart';
 import 'logincustomer.dart';
 import 'loginfarmer.dart';
 
+class MyElevatedButton extends StatelessWidget {
+  final BorderRadiusGeometry borderRadius;
+  final double width;
+  final double height;
+  final Gradient gradient;
+  final VoidCallback onPressed;
+  final Widget child;
+
+  const MyElevatedButton({
+    Key key,
+    this.onPressed,
+    this.child,
+    this.borderRadius,
+    this.width,
+    this.height = 44.0,
+    this.gradient = const LinearGradient(colors: [Colors.cyan, Colors.indigo]),
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final borderRadius = this.borderRadius ?? BorderRadius.circular(0);
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        gradient: gradient,
+        borderRadius: borderRadius,
+      ),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          shadowColor: Colors.transparent,
+          shape: RoundedRectangleBorder(borderRadius: borderRadius),
+        ),
+        child: child,
+      ),
+    );
+  }
+}
+
+class required {}
+
 void main() {
   runApp(const landing());
 }
 
 class landing extends StatelessWidget {
-  const landing({Key? key}) : super(key: key);
+  const landing({Key key}) : super(key: key);
 
   static const String _title = 'Blah Blah Blah';
 
@@ -25,7 +68,7 @@ class landing extends StatelessWidget {
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({Key? key}) : super(key: key);
+  const MyStatelessWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +81,20 @@ class MyStatelessWidget extends StatelessWidget {
         children: <Widget>[
           const SizedBox(height: 30),
           Container(
-            height: 200,
-            width: 130,
+            height: 120,
+            width: 170,
             child: Align(
               alignment: Alignment.center,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF42F581), // background
-                  onPrimary: Color.fromARGB(255, 0, 0, 0), // background
+              child: MyElevatedButton(
+                height: 180,
+                width: 130,
+                borderRadius: BorderRadius.circular(20),
+                // style: MyElevatedButton.styleFrom(
+                //   primary: Color(0xFF42F581), // background
+                //   onPrimary: Color.fromARGB(255, 0, 0, 0), // background
 
-                  padding: const EdgeInsets.fromLTRB(28, 50, 28, 50),
-                ),
+                //   padding: const EdgeInsets.fromLTRB(28, 50, 28, 50),
+                // ),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -62,46 +108,20 @@ class MyStatelessWidget extends StatelessWidget {
               ),
             ),
           ),
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(12),
-          //   child: Stack(
-          //     children: <Widget>[
-          //       Positioned.fill(
-          //         child: Container(
-          //           decoration: const BoxDecoration(
-          //             gradient: LinearGradient(
-          //               colors: <Color>[
-          //                 Color.fromARGB(255, 0, 0, 0),
-          //                 Color.fromARGB(255, 0, 0, 0),
-          //                 Color.fromARGB(255, 0, 0, 0),
-          //               ],
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //       TextButton(
-          //         style: TextButton.styleFrom(
-          //           padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-          //           primary: Colors.white,
-          //           textStyle: const TextStyle(fontSize: 16),
-          //         ),
-          //         onPressed: () {},
-          //         child: const Text('Login'),
-          //       ),
-          //     ],
-          //   ),
-          // ),
           Container(
-            height: 180,
-            width: 120,
+            height: 120,
+            width: 180,
             child: Align(
               alignment: Alignment.center,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFF42F581), // background
-                  onPrimary: Color.fromARGB(255, 0, 0, 0),
-                  padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
-                ),
+              child: MyElevatedButton(
+                height: 180,
+                width: 130,
+                borderRadius: BorderRadius.circular(20),
+                // style: ElevatedButton.styleFrom(
+                //   primary: Color.fromARGB(0, 0, 0, 0),
+                //   onPrimary: Color.fromARGB(255, 255, 255, 255),
+                //   padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
+                // ),
                 onPressed: () {
                   Navigator.push(
                     context,
