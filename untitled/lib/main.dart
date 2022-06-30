@@ -4,7 +4,7 @@ import 'package:dairyapp/logincustomer.dart';
 import '/home_screens/main_view.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'home_screens/home_page.dart';
+
 import 'home_screens/navigation_screens/myhome.dart';
 import 'home_screens/drawer_items/my_orders.dart';
 
@@ -20,7 +20,7 @@ void main() {
     routes: <String, WidgetBuilder>{
       '/a': (BuildContext context) => MainView(),
       '/b': (BuildContext context) => MyHome(),
-      '/homePage': (BuildContext context) => HomePage(),
+      '/homePage': (BuildContext context) => landing(),
       '/myOrders': (BuildContext context) => MyOrders(),
     },
   ));
