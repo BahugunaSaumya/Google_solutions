@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Google_solutions.iml" filepath="$PROJECT_DIR$/.idea/Google_solutions.iml" />
       <module fileurl="file://$PROJECT_DIR$/untitled/untitled.iml" filepath="$PROJECT_DIR$/untitled/untitled.iml" />
+      <module fileurl="file://$PROJECT_DIR$/untitled/android/untitled_android.iml" filepath="$PROJECT_DIR$/untitled/android/untitled_android.iml" />
     </modules>
   </component>
 </project>
