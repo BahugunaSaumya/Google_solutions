@@ -1,4 +1,6 @@
+import 'package:farmers_market/home_screens/main_view.dart';
 import 'package:flutter/material.dart';
+
 
 import 'logincustomer.dart';
 import 'loginfarmer.dart';
@@ -17,7 +19,19 @@ class new_customer extends StatelessWidget {
     return MaterialApp(
       title: _title,
       home: Scaffold(
-        appBar: AppBar(title: const Text(_title)),
+        appBar: AppBar(title: new Text(
+          "New Customer",
+          style: new TextStyle(color: Colors.white),
+        ),
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => loginCustomer()),
+              );
+            },
+          ),),
         body: const MyStatelessWidget(),
       ),
     );

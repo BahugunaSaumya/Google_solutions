@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -237,8 +236,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Container(
                   decoration: myBoxDecoration(Colors.green, Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
-                  child: CachedNetworkImage(
-                    imageUrl:
+                  child: Image.network(
+                    
                     'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
                     height: 40,
                     width: 40,
@@ -249,8 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration:
                   myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
-                  child: CachedNetworkImage(
-                    imageUrl:
+                  child: Image.network(
                     'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
                     height: 40,
                     width: 40,
@@ -261,8 +259,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration:
                   myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
-                  child: CachedNetworkImage(
-                    imageUrl:
+                  child: Image.network(
+                    
                     'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
                     height: 40,
                     width: 40,
@@ -273,8 +271,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration:
                   myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
-                  child: CachedNetworkImage(
-                    imageUrl:
+                  child: Image.network(
+                    
                     'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
                     height: 40,
                     width: 40,

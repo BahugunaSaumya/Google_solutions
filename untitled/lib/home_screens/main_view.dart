@@ -1,4 +1,4 @@
-import 'package:dairyapp/home_screens/drawer_items/my_orders.dart';
+import 'package:farmers_market/home_screens/drawer_items/my_orders.dart';
 
 import '/home_screens/navigation_screens/chat.dart';
 import '/home_screens/navigation_screens/myWallet.dart';

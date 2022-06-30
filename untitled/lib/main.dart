@@ -1,5 +1,5 @@
-import 'package:dairyapp/landing.dart';
-import 'package:dairyapp/logincustomer.dart';
+import 'package:farmers_market/landing.dart';
+import 'package:farmers_market/logincustomer.dart';
 
 import '/home_screens/main_view.dart';
 import 'package:flutter/material.dart';
