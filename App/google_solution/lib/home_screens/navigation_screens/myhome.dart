@@ -1,6 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:path/path.dart';
+import 'package:excel/excel.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class MyHome extends StatefulWidget {
   @override
@@ -8,9 +16,9 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
-  TextStyle myStyle = TextStyle(fontFamily: 'Gotham', fontSize: 13);
+  TextStyle myStyle = TextStyle(fontFamily: 'Gotham', fontSize: 10);
   TextStyle myStyleSmall =
-      TextStyle(fontFamily: 'Gotham', fontSize: 12, color: Colors.grey[600]);
+      TextStyle(fontFamily: 'Gotham', fontSize: 8, color: Colors.pink[600]);
   final _minpadding = 5.0;
 
   Widget imageCarousel = Container(
@@ -32,762 +40,133 @@ class _MyHomeState extends State<MyHome> {
       animationDuration: Duration(milliseconds: 3000),
     ),
   );
+  static List list = new List();
+  Future<void> readExcelFile() async {
+    // List list = new List();
+
+    ByteData data = await rootBundle.load("Categories.xlsx");
+    var bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    var excel = Excel.decodeBytes(bytes);
+    for (var table in excel.tables.keys) {
+      for (var row in excel.tables[table].rows) {
+        list.add(row);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey[200],
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            imageCarousel,
-            Padding(
-              padding: EdgeInsets.only(
-                  top: _minpadding * 3,
-                  bottom: _minpadding * 3,
-                  left: _minpadding * 2),
-              child: Text(
-                'ALL MILK',
-                style: myStyle,
-              ),
-            ),
-            SizedBox(
-              height: 332,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  Card(
-                    elevation: 2.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Image(
-                          width: 180.0,
-                          image: AssetImage('images/milk1.jpg'),
-                        ),
-                        Text(
-                          "AMUL",
-                          style: myStyleSmall,
-                        ),
-                        Text(
-                          "Amul Taaza",
-                          style: myStyle,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: _minpadding * 3),
-                          child: Text("1000 ml", style: myStyleSmall),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: RaisedButton(
-                            onPressed: () {},
-                            color: Colors.pink,
-                            child: Text(
-                              "SUBSCRIBE @67",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10.0),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Text(
-                            'MRP \u20B967',
-                            style:
-                                TextStyle(fontFamily: 'Gotham', fontSize: 10.0),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Container(
-                            height: 20,
-                            width: 200,
-                            color: Colors.grey[400],
-                            child: const Center(
-                                child: Text(
-                              'BUY ONCE',
-                              style: TextStyle(
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10,
-                                  color: Colors.white),
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
+    // var file = await rootBundle.load("assets/$fileName");
+    // var bytes = File(file).readAsBytesSync();
+    // var excel = Excel.decodeBytes(bytes);
+    readExcelFile();
+    {
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.transparent,
+        body: SingleChildScrollView(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: _minpadding * 3,
+                      bottom: _minpadding * 3,
+                      left: _minpadding * 2),
+                  child: Text(
+                    'Top Products',
+                    style: myStyle,
                   ),
-                  Card(
-                    elevation: 2.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Image(
-                          width: 180.0,
-                          image: AssetImage('images/milk2.jpg'),
-                        ),
-                        Text(
-                          "CHITALE",
-                          style: myStyleSmall,
-                        ),
-                        Text(
-                          "Chitale Buffalo",
-                          style: myStyle,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: _minpadding * 3),
-                          child: Text("500 ml", style: myStyleSmall),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: RaisedButton(
-                            onPressed: () {},
-                            color: Colors.pink,
-                            child: Text(
-                              "SUBSCRIBE @25",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10.0),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Text(
-                            'MRP \u20B925',
-                            style:
-                                TextStyle(fontFamily: 'Gotham', fontSize: 10.0),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Container(
-                            height: 20,
-                            width: 200,
-                            color: Colors.grey[400],
-                            child: const Center(
-                                child: Text(
-                              'BUY ONCE',
-                              style: TextStyle(
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10,
-                                  color: Colors.white),
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Card(
-                    elevation: 2.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Image(
-                          width: 180.0,
-                          image: AssetImage('images/milk3.jpg'),
-                        ),
-                        Text(
-                          "GOKUL",
-                          style: myStyleSmall,
-                        ),
-                        Text(
-                          "Gokul Cow",
-                          style: myStyle,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: _minpadding * 3),
-                          child: Text("500 ml", style: myStyleSmall),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: RaisedButton(
-                            onPressed: () {},
-                            color: Colors.pink,
-                            child: Text(
-                              "SUBSCRIBE @28",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10.0),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Text(
-                            'MRP \u20B928',
-                            style:
-                                TextStyle(fontFamily: 'Gotham', fontSize: 10.0),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Container(
-                            height: 20,
-                            width: 200,
-                            color: Colors.grey[400],
-                            child: const Center(
-                                child: Text(
-                              'BUY ONCE',
-                              style: TextStyle(
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10,
-                                  color: Colors.white),
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Card(
-                    elevation: 2.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Image(
-                          width: 180.0,
-                          image: AssetImage('images/milk4.jpg'),
-                        ),
-                        Text(
-                          "PROVILAC",
-                          style: myStyleSmall,
-                        ),
-                        Text(
-                          "A2 Desi Cow Milk",
-                          style: myStyle,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: _minpadding * 3),
-                          child: Text("500 ml", style: myStyleSmall),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: RaisedButton(
-                            onPressed: () {},
-                            color: Colors.pink,
-                            child: Text(
-                              "SUBSCRIBE @90",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10.0),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Text(
-                            'MRP \u20B990',
-                            style:
-                                TextStyle(fontFamily: 'Gotham', fontSize: 10.0),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Container(
-                            height: 20,
-                            width: 200,
-                            color: Colors.grey[400],
-                            child: const Center(
-                                child: Text(
-                              'BUY ONCE',
-                              style: TextStyle(
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10,
-                                  color: Colors.white),
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(_minpadding * 4),
-              color: Colors.white,
-              child: Center(
-                child: Text(
-                  'DAILY DELIVERY between 5:00AM-7:00AM',
-                  style: TextStyle(fontFamily: 'Gotham', fontSize: 12.0),
                 ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(_minpadding * 2),
-              width: double.infinity,
-              child: Image(
-                image: AssetImage(
-                  'images/subsci.jpg',
+                SizedBox(
+                  //padding: EdgeInsets.all(32),
+                  height: 140,
+
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: list.length,
+                    itemBuilder: (context, index) => Card(
+                      elevation: 2.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            FadeInImage.memoryNetwork(
+                                placeholder: kTransparentImage,
+                                fit: BoxFit.cover,
+                                height: 90,
+                                width: 150,
+                                image: list[index][2]),
+                            // Text(
+                            //   list[index][0].toString(),
+                            //   style: myStyleSmall,
+                            // ),
+                            Text(" "),
+                            Text(
+                              list[index][1],
+                              style: myStyle,
+                            ),
+                            // Padding(
+                            //   padding: EdgeInsets.only(top: _minpadding * 3),
+                            //   child: Text("1000 ml", style: myStyleSmall),
+                            // ),
+                            /* Padding(
+                            padding: EdgeInsets.all(1.0),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.pink, // Background color
+                                onPrimary: Colors
+                                    .amber, // Text Color (Foreground color)
+                              ),
+                              child: Text(
+                                "SUBSCRIBE @67",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Gotham',
+                                    fontSize: 10.0),
+                              ),
+                            ),
+                          ),*/
+                            // Padding(
+                            //   padding: EdgeInsets.only(top: 3),
+                            //   child: Text(
+                            //     'MRP \u20B967',
+                            //     style: TextStyle(
+                            //         fontFamily: 'Gotham', fontSize: 10.0),
+                            //   ),
+                            // ),
+                            /*Padding(
+                            padding: EdgeInsets.only(top: 3),
+                            child: Container(
+                              height: 20,
+                              width: 200,
+                              color: Colors.grey[400],
+                              child: const Center(
+                                  child: Text(
+                                'BUY ONCE',
+                                style: TextStyle(
+                                    fontFamily: 'Gotham',
+                                    fontSize: 10,
+                                    color: Colors.white),
+                              )),
+                            ),
+                          )*/
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: _minpadding * 3,
-                  bottom: _minpadding * 3,
-                  left: _minpadding * 2),
-              child: Text(
-                'SHOP BY CATEGORY',
-                style: myStyle,
-              ),
-            ),
-            SizedBox(
-              height: 500,
-              child: CustomScrollView(
-                primary: false,
-                slivers: <Widget>[
-                  SliverPadding(
-                    padding: const EdgeInsets.all(10.0),
-                    sliver: SliverGrid.count(
-                      crossAxisSpacing: 05.0,
-                      crossAxisCount: 3,
-                      children: <Widget>[
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/01.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/02.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/03.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/04.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/05.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/06.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/07.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/08.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/09.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/10.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/11.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          elevation: 2.0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Image(
-                                height: 110,
-                                image: AssetImage('images/12.jpg'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: _minpadding * 3,
-                  bottom: _minpadding * 3,
-                  left: _minpadding * 2),
-              child: Text(
-                'SHOP BY CATEGORY',
-                style: myStyle,
-              ),
-            ),
-            SizedBox(
-              height: 326.3,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  Card(
-                    elevation: 2.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Image(
-                          width: 180.0,
-                          image: AssetImage('images/banana.jpg'),
-                        ),
-                        Text(
-                          "FRESHO",
-                          style: myStyleSmall,
-                        ),
-                        Text(
-                          "Banana-Robusta",
-                          style: myStyle,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: _minpadding * 3),
-                          child: Text("500 gm", style: myStyleSmall),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: RaisedButton(
-                            onPressed: () {},
-                            color: Colors.pink,
-                            child: Text(
-                              "SUBSCRIBE @110",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10.0),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Text(
-                            'MRP \u20B922.5',
-                            style:
-                                TextStyle(fontFamily: 'Gotham', fontSize: 10.0),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Container(
-                            height: 20,
-                            width: 200,
-                            color: Colors.grey[400],
-                            child: const Center(
-                                child: Text(
-                              'BUY ONCE',
-                              style: TextStyle(
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10,
-                                  color: Colors.white),
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Card(
-                    elevation: 2.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Image(
-                          width: 180.0,
-                          image: AssetImage('images/dalimb.jpg'),
-                        ),
-                        Text(
-                          "FRESHO",
-                          style: myStyleSmall,
-                        ),
-                        Text(
-                          "Promegranate-peeled",
-                          style: myStyle,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: _minpadding * 3),
-                          child: Text("250 gm", style: myStyleSmall),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: RaisedButton(
-                            onPressed: () {},
-                            color: Colors.pink,
-                            child: Text(
-                              "SUBSCRIBE @44.8",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10.0),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Text(
-                            'MRP \u20B948.9',
-                            style:
-                                TextStyle(fontFamily: 'Gotham', fontSize: 10.0),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Container(
-                            height: 20,
-                            width: 200,
-                            color: Colors.grey[400],
-                            child: const Center(
-                                child: Text(
-                              'BUY ONCE',
-                              style: TextStyle(
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10,
-                                  color: Colors.white),
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Card(
-                    elevation: 2.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Image(
-                          width: 180.0,
-                          image: AssetImage('images/coconut1.jpg'),
-                        ),
-                        Text(
-                          "FRESHO",
-                          style: myStyleSmall,
-                        ),
-                        Text(
-                          "Tendor-Diced",
-                          style: myStyle,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: _minpadding * 3),
-                          child: Text("150 gm", style: myStyleSmall),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: RaisedButton(
-                            onPressed: () {},
-                            color: Colors.pink,
-                            child: Text(
-                              "SUBSCRIBE @40.6",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10.0),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Text(
-                            'MRP \u20B945',
-                            style:
-                                TextStyle(fontFamily: 'Gotham', fontSize: 10.0),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Container(
-                            height: 20,
-                            width: 200,
-                            color: Colors.grey[400],
-                            child: const Center(
-                                child: Text(
-                              'BUY ONCE',
-                              style: TextStyle(
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10,
-                                  color: Colors.white),
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Card(
-                    elevation: 2.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Image(
-                          width: 180.0,
-                          image: AssetImage('images/coconut2.jpg'),
-                        ),
-                        Text(
-                          "FRESHO",
-                          style: myStyleSmall,
-                        ),
-                        Text(
-                          "Coconut-Tendor",
-                          style: myStyle,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: _minpadding * 3),
-                          child: Text("1 pc", style: myStyleSmall),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: RaisedButton(
-                            onPressed: () {},
-                            color: Colors.pink,
-                            child: Text(
-                              "SUBSCRIBE @38.76",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10.0),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Text(
-                            'MRP \u20B940.5',
-                            style:
-                                TextStyle(fontFamily: 'Gotham', fontSize: 10.0),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3),
-                          child: Container(
-                            height: 20,
-                            width: 200,
-                            color: Colors.grey[400],
-                            child: const Center(
-                                child: Text(
-                              'BUY ONCE',
-                              style: TextStyle(
-                                  fontFamily: 'Gotham',
-                                  fontSize: 10,
-                                  color: Colors.white),
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+                imageCarousel,
+              ]),
         ),
-      ),
-    );
+      );
+    }
   }
 }

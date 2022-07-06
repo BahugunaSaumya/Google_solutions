@@ -17,7 +17,19 @@ class new_farmers extends StatelessWidget {
     return MaterialApp(
       title: _title,
       home: Scaffold(
-        appBar: AppBar(title: const Text(_title)),
+        appBar: AppBar(title: new Text(
+          "New Farmers",
+          style: new TextStyle(color: Colors.white),
+        ),
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => loginFarmer()),
+              );
+            },
+          ),),
         body: const MyStatelessWidget(),
       ),
     );

@@ -1,6 +1,7 @@
-import 'package:dairyapp/home_screens/main_view.dart';
+import 'package:farmers_market/home_screens/main_view.dart';
 import 'package:flutter/material.dart';
 import 'new_farmers.dart';
+import 'landing.dart';
 
 void main() {
   runApp(const loginFarmer());
@@ -16,7 +17,19 @@ class loginFarmer extends StatelessWidget {
     return MaterialApp(
       title: _title,
       home: Scaffold(
-        appBar: AppBar(title: const Text(_title)),
+        appBar: AppBar(title: new Text(
+          "New Customer",
+          style: new TextStyle(color: Colors.white),
+        ),
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => landing()),
+              );
+            },
+          ),),
         body: const MyStatelessWidget(),
       ),
     );
