@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:excel/excel.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class MyHome extends StatefulWidget {
   @override
@@ -82,7 +83,7 @@ class _MyHomeState extends State<MyHome> {
                       bottom: _minpadding * 3,
                       left: _minpadding * 2),
                   child: Text(
-                    'ALL MILK',
+                    'Top Products',
                     style: myStyle,
                   ),
                 ),
@@ -91,7 +92,7 @@ class _MyHomeState extends State<MyHome> {
                   height: 332,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: 10,
+                    itemCount: list.length,
                     itemBuilder: (context, index) =>
                         Card(
                           elevation: 2.0,
@@ -99,16 +100,19 @@ class _MyHomeState extends State<MyHome> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Image(
-                                width: 180.0,
-                                image: AssetImage('images/milk1.jpg'),
-                              ),
+
+                              FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              fit: BoxFit.cover,
+                              height: 90,
+                              width: 150,
+                              image:list[index][2]),
                               Text(
-                                "AMUL",
+                                list[index][0].toString(),
                                 style: myStyleSmall,
                               ),
                               Text(
-                                "Amul Taaza",
+                                list[index][1],
                                 style: myStyle,
                               ),
                               Padding(
