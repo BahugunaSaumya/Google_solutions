@@ -61,6 +61,7 @@ class _MyHomeState extends State<MyHome> {
     // var excel = Excel.decodeBytes(bytes);
     readExcelFile();
     {
+      ;
       return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
@@ -79,38 +80,53 @@ class _MyHomeState extends State<MyHome> {
                   ),
                 ),
                 SizedBox(
-                  //padding: EdgeInsets.all(32),
-                  height: 140,
-
+                  height: 130,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: list.length,
                     itemBuilder: (context, index) => Card(
-                      elevation: 2.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
+                      elevation: 0,
+                      color: Colors.transparent,
+                      shape: CircleBorder(),
+                      //  borderRadius: BorderRadius.all(Radius.circular(100))),
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          print(list[index][1] + ' Card tapped.');
+                        },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            FadeInImage.memoryNetwork(
+                            /*    FadeInImage.memoryNetwork(
                                 placeholder: kTransparentImage,
                                 fit: BoxFit.cover,
                                 height: 90,
                                 width: 150,
-                                image: list[index][2]),
+                                image: list[index][2]),*/
+                            CircleAvatar(
+                              radius: 51,
+                              backgroundColor: Colors.blueGrey,
+                              child: CircleAvatar(
+                                radius: 50,
+                                backgroundImage: NetworkImage(
+                                  list[index][2],
+                                ),
+                              ),
+                            ),
+                            Text(list[index][1], style: TextStyle(fontSize: 14))
                             // Text(
                             //   list[index][0].toString(),
                             //   style: myStyleSmall,
                             // ),
-                            Text(" "),
-                            Text(
-                              list[index][1],
-                              style: myStyle,
-                            ),
+                            /*Text(
+                            " ",
+                            style: TextStyle(fontSize: 6),
+                          ),
+                          Text(
+                            list[index][1],
+                            style: myStyle,
+                          ),*/
                             // Padding(
                             //   padding: EdgeInsets.only(top: _minpadding * 3),
                             //   child: Text("1000 ml", style: myStyleSmall),
