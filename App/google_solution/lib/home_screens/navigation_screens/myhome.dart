@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/services.dart';
@@ -92,7 +92,14 @@ class _MyHomeState extends State<MyHome> {
                       child: InkWell(
                         splashColor: Colors.blue.withAlpha(30),
                         onTap: () {
-                          print(list[index][1] + ' Card tapped.');
+                          Fluttertoast.showToast(
+                              msg: list[index][1] + " Tapped",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                              fontSize: 14.0);
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -139,7 +146,14 @@ class _MyHomeState extends State<MyHome> {
                         child: InkWell(
                           splashColor: Colors.blue.withAlpha(30),
                           onTap: () {
-                            print(list[index][1] + " Card Tapped");
+                            Fluttertoast.showToast(
+                                msg: list[index][1] + " Tapped",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 2,
+                                backgroundColor: Colors.black,
+                                textColor: Colors.white,
+                                fontSize: 14.0);
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
