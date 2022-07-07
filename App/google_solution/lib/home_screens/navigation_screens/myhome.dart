@@ -62,13 +62,13 @@ class _MyHomeState extends State<MyHome> {
     readExcelFile();
     {
       ;
-      return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.transparent,
-        body: SingleChildScrollView(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+      return Stack(children: [
+        Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.transparent,
+          body: SingleChildScrollView(
+            child: Container(
+              child: Column(children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(
                       top: _minpadding * 3,
@@ -83,7 +83,7 @@ class _MyHomeState extends State<MyHome> {
                   height: 130,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: list.length,
+                    itemCount: list[list.length - 1][0],
                     itemBuilder: (context, index) => Card(
                       elevation: 0,
                       color: Colors.transparent,
@@ -115,74 +115,64 @@ class _MyHomeState extends State<MyHome> {
                               ),
                             ),
                             Text(list[index][1], style: TextStyle(fontSize: 14))
-                            // Text(
-                            //   list[index][0].toString(),
-                            //   style: myStyleSmall,
-                            // ),
-                            /*Text(
-                            " ",
-                            style: TextStyle(fontSize: 6),
-                          ),
-                          Text(
-                            list[index][1],
-                            style: myStyle,
-                          ),*/
-                            // Padding(
-                            //   padding: EdgeInsets.only(top: _minpadding * 3),
-                            //   child: Text("1000 ml", style: myStyleSmall),
-                            // ),
-                            /* Padding(
-                            padding: EdgeInsets.all(1.0),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.pink, // Background color
-                                onPrimary: Colors
-                                    .amber, // Text Color (Foreground color)
-                              ),
-                              child: Text(
-                                "SUBSCRIBE @67",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Gotham',
-                                    fontSize: 10.0),
-                              ),
-                            ),
-                          ),*/
-                            // Padding(
-                            //   padding: EdgeInsets.only(top: 3),
-                            //   child: Text(
-                            //     'MRP \u20B967',
-                            //     style: TextStyle(
-                            //         fontFamily: 'Gotham', fontSize: 10.0),
-                            //   ),
-                            // ),
-                            /*Padding(
-                            padding: EdgeInsets.only(top: 3),
-                            child: Container(
-                              height: 20,
-                              width: 200,
-                              color: Colors.grey[400],
-                              child: const Center(
-                                  child: Text(
-                                'BUY ONCE',
-                                style: TextStyle(
-                                    fontFamily: 'Gotham',
-                                    fontSize: 10,
-                                    color: Colors.white),
-                              )),
-                            ),
-                          )*/
                           ],
                         ),
                       ),
                     ),
                   ),
                 ),
+                Text("    ", style: TextStyle(fontSize: 20)),
                 imageCarousel,
+                Text("  "),
+                Container(
+                    height: 300,
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3),
+                      itemCount: list[list.length - 1][0],
+                      itemBuilder: (BuildContext context, int index) => Card(
+                        elevation: 0,
+                        color: Colors.transparent,
+                        shape: CircleBorder(),
+                        //  borderRadius: BorderRadius.all(Radius.circular(100))),
+                        child: InkWell(
+                          splashColor: Colors.blue.withAlpha(30),
+                          onTap: () {
+                            print(list[index][1] + " Card Tapped");
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              /*    FadeInImage.memoryNetwork(
+                                placeholder: kTransparentImage,
+                                fit: BoxFit.cover,
+                                height: 90,
+                                width: 150,
+                                image: list[index][2]),*/
+                              CircleAvatar(
+                                radius: 51,
+                                backgroundColor: Colors.blueGrey,
+                                child: CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage: NetworkImage(
+                                    list[index][2],
+                                  ),
+                                ),
+                              ),
+                              Text(list[index][1],
+                                  style: TextStyle(fontSize: 8))
+                            ],
+                          ),
+                        ),
+                      ),
+                    ))
               ]),
+            ),
+          ),
         ),
-      );
+      ]);
     }
   }
 }
