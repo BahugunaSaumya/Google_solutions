@@ -1,20 +1,42 @@
+import 'package:farmers_market/home_screens/navigation_screens/myhome.dart';
 import 'package:flutter/material.dart';
+
+import 'home_screens/main_view.dart';
 
 void main() {
   runApp(product());
+  var hello = "";
 }
 
 class product extends StatelessWidget {
   @override
+  static var hello = "";
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      //title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: new Text(
+            hello,
+            style: new TextStyle(color: Colors.white),
+          ),
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MainView()),
+              );
+            },
+          ),
+        ),
+        body: MyHomePage(),
+      ),
     );
   }
 }
@@ -237,7 +259,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: myBoxDecoration(Colors.green, Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
-                    
                     'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
                     height: 40,
                     width: 40,
@@ -246,7 +267,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   decoration:
-                  myBoxDecoration(Colors.grey[300], Colors.grey[300]),
+                      myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
                     'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
@@ -257,10 +278,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   decoration:
-                  myBoxDecoration(Colors.grey[300], Colors.grey[300]),
+                      myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
-                    
                     'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
                     height: 40,
                     width: 40,
@@ -269,10 +289,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   decoration:
-                  myBoxDecoration(Colors.grey[300], Colors.grey[300]),
+                      myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
-                    
                     'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
                     height: 40,
                     width: 40,
@@ -281,7 +300,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                     decoration:
-                    myBoxDecoration(Colors.grey[300], Colors.grey[300]),
+                        myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                     margin: EdgeInsets.only(right: 8),
                     height: 42,
                     width: 42,
@@ -395,15 +414,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           child: _value
                               ? Icon(
-                            Icons.fiber_manual_record,
-                            size: 15.0,
-                            color: Colors.black,
-                          )
+                                  Icons.fiber_manual_record,
+                                  size: 15.0,
+                                  color: Colors.black,
+                                )
                               : Icon(
-                            Icons.check_box_outline_blank,
-                            size: 15.0,
-                            color: Colors.white,
-                          ),
+                                  Icons.check_box_outline_blank,
+                                  size: 15.0,
+                                  color: Colors.white,
+                                ),
                         ),
                       ),
                     ),
@@ -512,15 +531,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           child: !_value
                               ? Icon(
-                            Icons.fiber_manual_record,
-                            size: 15.0,
-                            color: Colors.black,
-                          )
+                                  Icons.fiber_manual_record,
+                                  size: 15.0,
+                                  color: Colors.black,
+                                )
                               : Icon(
-                            Icons.check_box_outline_blank,
-                            size: 15.0,
-                            color: Colors.white,
-                          ),
+                                  Icons.check_box_outline_blank,
+                                  size: 15.0,
+                                  color: Colors.white,
+                                ),
                         ),
                       ),
                     ),

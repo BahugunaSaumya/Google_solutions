@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:farmers_market/product.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
@@ -90,8 +91,14 @@ class _MyHomeState extends State<MyHome> {
                       shape: CircleBorder(),
                       //  borderRadius: BorderRadius.all(Radius.circular(100))),
                       child: InkWell(
-                        splashColor: Colors.blue.withAlpha(30),
+                        splashColor: Colors.transparent,
                         onTap: () {
+                             product.hello = list[index][1];
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => product()),
+                            );
                           Fluttertoast.showToast(
                               msg: list[index][1] + " Tapped",
                               toastLength: Toast.LENGTH_SHORT,
@@ -144,8 +151,14 @@ class _MyHomeState extends State<MyHome> {
                         shape: CircleBorder(),
                         //  borderRadius: BorderRadius.all(Radius.circular(100))),
                         child: InkWell(
-                          splashColor: Colors.blue.withAlpha(30),
+                          splashColor: Colors.transparent,
                           onTap: () {
+                            product.hello = list[index][1];
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => product()),
+                            );
                             Fluttertoast.showToast(
                                 msg: list[index][1] + " Tapped",
                                 toastLength: Toast.LENGTH_SHORT,
@@ -166,10 +179,10 @@ class _MyHomeState extends State<MyHome> {
                                 width: 150,
                                 image: list[index][2]),*/
                               CircleAvatar(
-                                radius: 51,
+                                radius: 50,
                                 backgroundColor: Colors.blueGrey,
                                 child: CircleAvatar(
-                                  radius: 50,
+                                  radius: 49,
                                   backgroundImage: NetworkImage(
                                     list[index][2],
                                   ),
