@@ -179,18 +179,36 @@ class _MyHomeState extends State<MyHome> {
                                 height: 90,
                                 width: 150,
                                 image: list[index][2]),*/
-                              CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.blueGrey,
-                                child: CircleAvatar(
-                                  radius: 49,
-                                  backgroundImage: NetworkImage(
-                                    list[index][2],
+                              Container(
+                                //radius: 50,
+                                //backgroundColor: Colors.blueGrey,
+
+                                decoration: BoxDecoration(
+                                    color: Colors.blueGrey,
+                                    border: Border.all(
+                                        color: Colors.orange, width: 1),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(30.0))),
+                                height: 90,
+                                width: 90,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(30),
+
+                                  //radius: 49,
+                                  //backgroundImage: NetworkImage(
+                                  child: FadeInImage.memoryNetwork(
+                                    placeholder: kTransparentImage,
+                                    image: list[index][2],
+                                    fit: BoxFit.fill,
                                   ),
                                 ),
                               ),
+                              Text(
+                                "  ",
+                                style: TextStyle(fontSize: 6),
+                              ),
                               Text(list[index][1],
-                                  style: TextStyle(fontSize: 8))
+                                  style: TextStyle(fontSize: 12))
                             ],
                           ),
                         ),

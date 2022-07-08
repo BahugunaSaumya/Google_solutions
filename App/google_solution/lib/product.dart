@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 //print(list);
     List url = checkurl(list, hello);
-    print(url);
+
     //"https://previews.123rf.com/images/kaymosk/kaymosk1804/kaymosk180400005/99776312-error-404-page-not-found-error-with-glitch-effect-on-screen-vector-illustration-for-your-design.jpg"; //checkurl(list, hello);
     return Scaffold(
       appBar: AppBar(
@@ -268,6 +268,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   flex: 1,
                   child: Container(
                     height: 20,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black12, width: 1)),
                     child: Image.network(url[2]),
                   ),
                 ),
@@ -275,7 +277,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   flex: 7,
                   child: Container(
                     height: 300,
-                    child: Image.network(url[2]),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black12, width: 1)),
+                    child: Image.network(
+                      url[2],
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               ],
