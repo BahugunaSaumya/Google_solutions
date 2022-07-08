@@ -24,6 +24,16 @@ class _MyHomeState extends State<MyHome> {
 
   Widget imageCarousel = Container(
     height: 170,
+    decoration: BoxDecoration(
+      boxShadow: [
+        BoxShadow(
+          color: Colors.blueGrey.withOpacity(0.6),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(2, 0), // changes position of shadow
+        ),
+      ],
+    ),
     child: Carousel(
       boxFit: BoxFit.cover,
       images: [
@@ -118,15 +128,33 @@ class _MyHomeState extends State<MyHome> {
                                 height: 90,
                                 width: 150,
                                 image: list[index][2]),*/
-                            CircleAvatar(
-                              radius: 51,
-                              backgroundColor: Colors.blueGrey,
-                              child: CircleAvatar(
-                                radius: 50,
-                                backgroundImage: NetworkImage(
-                                  list[index][2],
+                            Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.blueGrey.withOpacity(0.5),
+                                      spreadRadius: 4,
+                                      blurRadius: 6,
+                                      offset: Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
                                 ),
-                              ),
+                                child: CircleAvatar(
+                                  radius: 51,
+                                  backgroundColor: Colors.blueGrey,
+                                  child: CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage: NetworkImage(
+                                      list[index][2],
+                                    ),
+                                  ),
+                                )),
+                            Text(
+                              " ",
+                              style: TextStyle(fontSize: 3),
                             ),
                             Text(list[index][1], style: TextStyle(fontSize: 14))
                           ],
@@ -184,7 +212,16 @@ class _MyHomeState extends State<MyHome> {
                                 //backgroundColor: Colors.blueGrey,
 
                                 decoration: BoxDecoration(
-                                    color: Colors.blueGrey,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.blueGrey.withOpacity(0.6),
+                                        spreadRadius: 4,
+                                        blurRadius: 7,
+                                        offset: Offset(
+                                            0, 2), // changes position of shadow
+                                      ),
+                                    ],
+                                    color: Colors.transparent,
                                     border: Border.all(
                                         color: Colors.orange, width: 1),
                                     borderRadius: BorderRadius.all(
