@@ -134,9 +134,9 @@ class _MyHomeState extends State<MyHome> {
                                   shape: BoxShape.circle,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.blueGrey.withOpacity(0.5),
-                                      spreadRadius: 4,
-                                      blurRadius: 6,
+                                      color: Colors.deepPurple.withOpacity(0.4),
+                                      spreadRadius: 3,
+                                      blurRadius: 8,
                                       offset: Offset(
                                           0, 3), // changes position of shadow
                                     ),
@@ -144,11 +144,14 @@ class _MyHomeState extends State<MyHome> {
                                 ),
                                 child: CircleAvatar(
                                   radius: 51,
-                                  backgroundColor: Colors.blueGrey,
+                                  backgroundColor:
+                                      Color.fromARGB(255, 203, 126, 216),
                                   child: CircleAvatar(
                                     radius: 50,
+                                  
                                     backgroundImage: NetworkImage(
                                       list[index][2],
+                                      
                                     ),
                                   ),
                                 )),
@@ -214,16 +217,19 @@ class _MyHomeState extends State<MyHome> {
                                 decoration: BoxDecoration(
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.blueGrey.withOpacity(0.6),
-                                        spreadRadius: 4,
-                                        blurRadius: 7,
+                                        color:
+                                            Colors.deepPurple.withOpacity(0.4),
+                                        spreadRadius: 2,
+                                        blurRadius: 8,
                                         offset: Offset(
-                                            0, 2), // changes position of shadow
+                                            0, 3), // changes position of shadow
                                       ),
                                     ],
                                     color: Colors.transparent,
                                     border: Border.all(
-                                        color: Colors.orange, width: 1),
+                                      color: Color.fromARGB(255, 203, 126, 216),
+                                      width: .8,
+                                    ),
                                     borderRadius: BorderRadius.all(
                                         Radius.circular(30.0))),
                                 height: 90,
