@@ -93,12 +93,12 @@ class _MyHomeState extends State<MyHome> {
                       child: InkWell(
                         splashColor: Colors.transparent,
                         onTap: () {
-                             product.hello = list[index][1];
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => product()),
-                            );
+                          product.li = list;
+                          product.he = list[index][1];
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => product()),
+                          );
                           Fluttertoast.showToast(
                               msg: list[index][1] + " Tapped",
                               toastLength: Toast.LENGTH_SHORT,
@@ -153,7 +153,8 @@ class _MyHomeState extends State<MyHome> {
                         child: InkWell(
                           splashColor: Colors.transparent,
                           onTap: () {
-                            product.hello = list[index][1];
+                            product.li = list;
+                            product.he = list[index][1];
                             Navigator.push(
                               context,
                               MaterialPageRoute(
