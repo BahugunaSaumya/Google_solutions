@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "132266036093",
+    "project_id": "farmer-s-market-26578",
+    "storage_bucket": "farmer-s-market-26578.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132266036093:android:cbeefaa189e6fd20259a14",
+        "android_client_info": {
+          "package_name": "com.example.untitled"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "132266036093-hotng8np4joogrq9cu8o0de52gliuf2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqlFkPdidOP5ponXfhbidaE-q0_0NcEak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "132266036093-hotng8np4joogrq9cu8o0de52gliuf2u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "132266036093-leuao1ujjm7ievgqo3a9ls98u63r79i7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.untitled"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

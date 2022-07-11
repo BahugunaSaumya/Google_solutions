@@ -1,20 +1,65 @@
+import 'package:farmers_market/home_screens/navigation_screens/myhome.dart';
 import 'package:flutter/material.dart';
+
+import 'home_screens/main_view.dart';
 
 void main() {
   runApp(product());
 }
 
+// a function to return url
+List checkurl(List lis, String hell) {
+  //print(lis);
+  // print(hell);
+  List temp = [
+    0,
+    "Not found",
+    "https://previews.123rf.com/images/kaymosk/kaymosk1804/kaymosk180400005/99776312-error-404-page-not-found-error-with-glitch-effect-on-screen-vector-illustration-for-your-design.jpg"
+  ];
+  for (int i = 0; i < lis.length; i++) {
+    if (lis[i][1].toString().compareTo(hell) == 0) {
+      // print(lis[i][1]);
+      return lis[i];
+    }
+  }
+  return temp;
+}
+
 class product extends StatelessWidget {
   @override
+  static List li;
+  static var he = "";
+
   Widget build(BuildContext context) {
+    //  MyHomePage.list = list;
+    _MyHomePageState.hello = he;
+    _MyHomePageState.list = li;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      //title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: new Text(
+            he,
+            style: new TextStyle(color: Colors.white),
+          ),
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MainView()),
+              );
+            },
+          ),
+        ),
+        body: MyHomePage(),
+      ),
     );
   }
 }
@@ -22,6 +67,8 @@ class product extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
+  //_MyHomePageState _myHomePageState = new _MyHomePageState();
+
 }
 
 bool _value = true;
@@ -37,8 +84,15 @@ BoxDecoration myBoxDecoration(Color color, Color bg) {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  static var hello = "";
+  static List list;
+
   @override
   Widget build(BuildContext context) {
+//print(list);
+    List url = checkurl(list, hello);
+
+    //"https://previews.123rf.com/images/kaymosk/kaymosk1804/kaymosk180400005/99776312-error-404-page-not-found-error-with-glitch-effect-on-screen-vector-illustration-for-your-design.jpg"; //checkurl(list, hello);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
@@ -105,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.all(3),
                   child: Center(
                     child: Text(
-                      'Rose Shake 200 ml - Bottle',
+                      url[1],
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
@@ -214,16 +268,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   flex: 1,
                   child: Container(
                     height: 20,
-                    child: Image.network(
-                        'https://oslocks.files.wordpress.com/2014/11/vegetarian-symbol.png'),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.5),
+        spreadRadius: 5,
+        blurRadius: 7,
+        offset: Offset(0, 3), // changes position of shadow
+      ),
+    ],
+                        border: Border.all(color: Colors.black12, width: 1)),
+                    child: Image.network(url[2]),
                   ),
                 ),
                 Expanded(
                   flex: 7,
                   child: Container(
                     height: 300,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black12, width: 1)),
                     child: Image.network(
-                        'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg'),
+                      url[2],
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               ],
@@ -237,8 +304,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: myBoxDecoration(Colors.green, Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
-                    
-                    'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
+                    url[2],
                     height: 40,
                     width: 40,
                     fit: BoxFit.cover,
@@ -246,10 +312,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   decoration:
-                  myBoxDecoration(Colors.grey[300], Colors.grey[300]),
+                      myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
-                    'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
+                    url[2],
                     height: 40,
                     width: 40,
                     fit: BoxFit.cover,
@@ -257,11 +323,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   decoration:
-                  myBoxDecoration(Colors.grey[300], Colors.grey[300]),
+                      myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
-                    
-                    'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
+                    url[2],
                     height: 40,
                     width: 40,
                     fit: BoxFit.cover,
@@ -269,11 +334,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                   decoration:
-                  myBoxDecoration(Colors.grey[300], Colors.grey[300]),
+                      myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
-                    
-                    'https://www.bigbasket.com/media/uploads/p/l/40191789_3-storia-rose-shake.jpg',
+                    url[2],
                     height: 40,
                     width: 40,
                     fit: BoxFit.cover,
@@ -281,7 +345,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Container(
                     decoration:
-                    myBoxDecoration(Colors.grey[300], Colors.grey[300]),
+                        myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                     margin: EdgeInsets.only(right: 8),
                     height: 42,
                     width: 42,
@@ -395,15 +459,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           child: _value
                               ? Icon(
-                            Icons.fiber_manual_record,
-                            size: 15.0,
-                            color: Colors.black,
-                          )
+                                  Icons.fiber_manual_record,
+                                  size: 15.0,
+                                  color: Colors.black,
+                                )
                               : Icon(
-                            Icons.check_box_outline_blank,
-                            size: 15.0,
-                            color: Colors.white,
-                          ),
+                                  Icons.check_box_outline_blank,
+                                  size: 15.0,
+                                  color: Colors.white,
+                                ),
                         ),
                       ),
                     ),
@@ -512,15 +576,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           child: !_value
                               ? Icon(
-                            Icons.fiber_manual_record,
-                            size: 15.0,
-                            color: Colors.black,
-                          )
+                                  Icons.fiber_manual_record,
+                                  size: 15.0,
+                                  color: Colors.black,
+                                )
                               : Icon(
-                            Icons.check_box_outline_blank,
-                            size: 15.0,
-                            color: Colors.white,
-                          ),
+                                  Icons.check_box_outline_blank,
+                                  size: 15.0,
+                                  color: Colors.white,
+                                ),
                         ),
                       ),
                     ),
