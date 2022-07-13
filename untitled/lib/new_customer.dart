@@ -1,5 +1,10 @@
 import 'package:farmers_market/home_screens/main_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+
+// Import the firebase_core and cloud_firestore plugin
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 import 'logincustomer.dart';
@@ -16,6 +21,7 @@ class new_customer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: _title,
       home: Scaffold(
@@ -32,22 +38,30 @@ class new_customer extends StatelessWidget {
               );
             },
           ),),
-        body: const MyStatelessWidget(),
+        body:  MyStatelessWidget(),
       ),
     );
   }
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({Key key}) : super(key: key);
+   MyStatelessWidget({Key key}) : super(key: key);
+   final   name = TextEditingController();
+  final   email = TextEditingController();
+   final   phone = TextEditingController();
+   final   address = TextEditingController();
+   final   password = TextEditingController();
 
-  @override
+
+   @override
   Widget build(BuildContext context) {
+    CollectionReference customers = FirebaseFirestore.instance.collection('Customers');
     return ListView(padding: const EdgeInsets.all(8), children: <Widget>[
       Column(children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextFormField(
+            controller: name,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               labelText: 'Name',
@@ -57,6 +71,7 @@ class MyStatelessWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextFormField(
+            controller: email,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               labelText: 'Email id',
@@ -66,6 +81,7 @@ class MyStatelessWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextFormField(
+            controller: phone,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               labelText: 'Phone no',
@@ -75,6 +91,7 @@ class MyStatelessWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextFormField(
+            controller: address,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               labelText: 'Address',
@@ -84,12 +101,14 @@ class MyStatelessWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextFormField(
+            controller: password,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               labelText: 'Password',
             ),
           ),
         ),
+
         const SizedBox(height: 40),
         ClipRRect(
           borderRadius: BorderRadius.circular(4),
@@ -114,7 +133,42 @@ class MyStatelessWidget extends StatelessWidget {
                   primary: Colors.white,
                   textStyle: const TextStyle(fontSize: 20),
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  FirebaseFirestore db;
+                  db = FirebaseFirestore.instance;
+                  final userDocRef = FirebaseFirestore.instance.collection('Customers').doc(email.text);
+                  final doc = await userDocRef.get();
+                  if (doc.exists) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          // Retrieve the text the that user has entered by using the
+                          // TextEditingController.
+                          content: Text("Email Already exist! Try logging in "),
+                        );
+                      },
+                    );
+                  }
+                  else {
+                    final customer = <String, String>{
+                      "Name": name.text,
+                      "Email": email.text,
+                      "Phone": phone.text,
+                      "Address": address.text,
+                      "Password": password.text
+                    };
+                    db
+                        .collection("Customers")
+                        .doc(email.text)
+                        .set(customer)
+                        .onError((e, _) {
+                      print("Error writing document: $e");
+                    });
+                  }
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => loginCustomer()));
+                },
                 child: const Text('Submit'),
               ),
             ],

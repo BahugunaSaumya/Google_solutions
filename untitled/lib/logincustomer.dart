@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmers_market/home_screens/main_view.dart';
 import 'package:flutter/material.dart';
 
 import 'new_customer.dart';
@@ -30,28 +32,32 @@ class loginCustomer extends StatelessWidget {
               );
             },
           ),),
-        body: const MyStatelessWidget(),
+        body:  MyStatelessWidget(),
       ),
     );
   }
 }
 
 class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({Key key}) : super(key: key);
 
+   MyStatelessWidget({Key key}) : super(key: key);
+   final   myController1 = TextEditingController();
+   final   myController2 = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Center(
+
       child: SingleChildScrollView(
         padding: EdgeInsets.all(30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
             Container(
                 width: 180.0,
                 height: 30.0,
-                child: const TextField(
+                child:  TextField(
+                  controller: myController1,
                   obscureText: false,
                   maxLines: 1,
                   style: TextStyle(
@@ -67,7 +73,8 @@ class MyStatelessWidget extends StatelessWidget {
             Container(
                 width: 180.0,
                 height: 30.0,
-                child: const TextField(
+                child:  TextField(
+                  controller: myController2,
                   maxLines: 1,
                   obscureText: true,
                   style: TextStyle(
@@ -103,7 +110,55 @@ class MyStatelessWidget extends StatelessWidget {
                       primary: Colors.white,
                       textStyle: const TextStyle(fontSize: 16),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      FirebaseFirestore db;
+                      db = FirebaseFirestore.instance;
+                      final userDocRef = FirebaseFirestore.instance.collection('Customers').doc(myController1.text);
+                      final doc = await userDocRef.get();
+                      if (!doc.exists) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              // Retrieve the text the that user has entered by using the
+                              // TextEditingController.
+                              content: Text("Account doesn't exist! "),
+                            );
+                          },
+                        );
+                      }
+                      else {
+                        final docRef = db.collection("Customers").doc(myController1.text);
+
+                        docRef.get().then(
+                              (DocumentSnapshot doc) {
+                            final data = doc.data() as Map<String, dynamic>;
+                            String pass=data["Password"];
+                            if(pass.compareTo(myController2.text)==0)
+                              {
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) => MainView()));
+                              }
+                            else
+                              {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      // Retrieve the text the that user has entered by using the
+                                      // TextEditingController.
+                                      content: Text("Wrong Password "),
+                                    );
+                                  },
+                                );
+
+                              }
+                          },
+                          onError: (e) => print("Error getting document: $e"),
+                        );
+                      }
+
+                    },
                     child: const Text('Login'),
                   ),
                 ],
