@@ -55,42 +55,11 @@ class _MyHomeState extends State<MyHome> {
   static List list = new List();
   static List<DocumentSnapshot> documents;
   Future<void> readExcelFile() async {
-
     final result =
         await FirebaseFirestore.instance.collection('Categories').get();
-   
+
     documents = result.docs;
- 
     print(documents.length);
-    int count = 1;
-    for (DocumentSnapshot data in documents) {
-      List temp = new List();
-      temp.add(count);
-      temp.add(data.id.toString());
-      temp.add(data.get("img").toString());
-      
-      list.add(temp);
-      count++;
-    }
-    
-    /*userDocRef.get().then(
-      (DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        print(data);
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );*/
-    // print(res);
-    // List list = new List();
-/*
-    ByteData data = await rootBundle.load("Categories.xlsx");
-    var bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    var excel = Excel.decodeBytes(bytes);
-    for (var table in excel.tables.keys) {
-      for (var row in excel.tables[table].rows) {
-        list.add(row);
-      }
-    }*/
   }
 
   @override
@@ -99,7 +68,6 @@ class _MyHomeState extends State<MyHome> {
     // var bytes = File(file).readAsBytesSync();
     // var excel = Excel.decodeBytes(bytes);
 
-    readExcelFile();
     /*list = [
       [
         1,
@@ -113,195 +81,236 @@ class _MyHomeState extends State<MyHome> {
       ]
     ];
 */
-    {
-      ;
-      return Stack(children: [
-        Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-            child: Container(
-              child: Column(children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: _minpadding * 3,
-                      bottom: _minpadding * 3,
-                      left: _minpadding * 2),
-                  child: Text(
-                    'Top Products',
-                    style: myStyle,
-                  ),
-                ),
-                SizedBox(
-                  height: 130,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: list.length,
-                    itemBuilder: (context, index) => Card(
-                      elevation: 0,
-                      color: Colors.transparent,
-                      shape: CircleBorder(),
-                      //  borderRadius: BorderRadius.all(Radius.circular(100))),
-                      child: InkWell(
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          product.li = list;
-                          product.he = list[index][1];
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => product()),
-                          );
-                          Fluttertoast.showToast(
-                              msg: documents[index].id + " Tapped",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 2,
-                              backgroundColor: Colors.black,
-                              textColor: Colors.white,
-                              fontSize: 14.0);
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            /*    FadeInImage.memoryNetwork(
-                                placeholder: kTransparentImage,
-                                fit: BoxFit.cover,
-                                height: 90,
-                                width: 150,
-                                image: list[index][2]),*/
-                            Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.deepPurple.withOpacity(0.4),
-                                      spreadRadius: 3,
-                                      blurRadius: 8,
-                                      offset: Offset(
-                                          0, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                                child: CircleAvatar(
-                                  radius: 51,
-                                  backgroundColor:
-                                      Color.fromARGB(255, 203, 126, 216),
-                                  child: CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage: NetworkImage(
-                                      list[index][2],
-                                    ),
-                                  ),
-                                )),
-                            Text(
-                              " ",
-                              style: TextStyle(fontSize: 3),
+    var flag = 0;
+    return RefreshIndicator(
+        child: Stack(children: [
+          Scaffold(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: Colors.transparent,
+              body: SingleChildScrollView(
+                child: Container(
+                  child: FutureBuilder<void>(
+                      future: readExcelFile(),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<void> snapshot) {
+                        List<Widget> children;
+                        if (documents != null) {
+                          children = <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: _minpadding * 3,
+                                  bottom: _minpadding * 3,
+                                  left: _minpadding * 2),
+                              child: Text(
+                                'Top Products',
+                                style: myStyle,
+                              ),
                             ),
-                            Text(list[index][1], style: TextStyle(fontSize: 14))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Text("    ", style: TextStyle(fontSize: 20)),
-                imageCarousel,
-                Text("  "),
-                Container(
-                    height: 300,
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3),
-                      itemCount: list.length,
-                      itemBuilder: (BuildContext context, int index) => Card(
-                        elevation: 0,
-                        color: Colors.transparent,
-                        shape: CircleBorder(),
-                        //  borderRadius: BorderRadius.all(Radius.circular(100))),
-                        child: InkWell(
-                          splashColor: Colors.transparent,
-                          onTap: () {
-                            product.li = list;
-                            product.he = list[index][1];
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => product()),
-                            );
-                            Fluttertoast.showToast(
-                                msg: list[index][1] + " Tapped",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 2,
-                                backgroundColor: Colors.black,
-                                textColor: Colors.white,
-                                fontSize: 14.0);
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              /*    FadeInImage.memoryNetwork(
+                            SizedBox(
+                              height: 130,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: documents.length,
+                                itemBuilder: (context, index) => Card(
+                                  elevation: 0,
+                                  color: Colors.transparent,
+                                  shape: CircleBorder(),
+                                  //  borderRadius: BorderRadius.all(Radius.circular(100))),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    onTap: () {
+                                      product.li = documents;
+                                      product.he = documents[index].id;
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => product()),
+                                      );
+                                      Fluttertoast.showToast(
+                                          msg: documents[index].id + " Tapped",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 2,
+                                          backgroundColor: Colors.black,
+                                          textColor: Colors.white,
+                                          fontSize: 14.0);
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        /*    FadeInImage.memoryNetwork(
                                 placeholder: kTransparentImage,
                                 fit: BoxFit.cover,
                                 height: 90,
                                 width: 150,
                                 image: list[index][2]),*/
-                              Container(
-                                //radius: 50,
-                                //backgroundColor: Colors.blueGrey,
-
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color:
-                                            Colors.deepPurple.withOpacity(0.4),
-                                        spreadRadius: 2,
-                                        blurRadius: 8,
-                                        offset: Offset(
-                                            0, 3), // changes position of shadow
-                                      ),
-                                    ],
-                                    color: Colors.transparent,
-                                    border: Border.all(
-                                      color: Color.fromARGB(255, 203, 126, 216),
-                                      width: .8,
+                                        Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.deepPurple
+                                                      .withOpacity(0.4),
+                                                  spreadRadius: 3,
+                                                  blurRadius: 8,
+                                                  offset: Offset(0,
+                                                      3), // changes position of shadow
+                                                ),
+                                              ],
+                                            ),
+                                            child: CircleAvatar(
+                                              radius: 51,
+                                              backgroundColor: Color.fromARGB(
+                                                  255, 203, 126, 216),
+                                              child: CircleAvatar(
+                                                radius: 50,
+                                                backgroundImage: NetworkImage(
+                                                  documents[index].get("img"),
+                                                ),
+                                              ),
+                                            )),
+                                        Text(
+                                          " ",
+                                          style: TextStyle(fontSize: 3),
+                                        ),
+                                        Text(documents[index].id,
+                                            style: TextStyle(fontSize: 14))
+                                      ],
                                     ),
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30.0))),
-                                height: 90,
-                                width: 90,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(30),
-
-                                  //radius: 49,
-                                  //backgroundImage: NetworkImage(
-                                  child: FadeInImage.memoryNetwork(
-                                    placeholder: kTransparentImage,
-                                    image: list[index][2],
-                                    fit: BoxFit.fill,
                                   ),
                                 ),
                               ),
-                              Text(
-                                "  ",
-                                style: TextStyle(fontSize: 6),
-                              ),
-                              Text(list[index][1],
-                                  style: TextStyle(fontSize: 12))
-                            ],
-                          ),
-                        ),
-                      ),
-                    ))
-              ]),
-            ),
-          ),
-        ),
-      ]);
-    }
+                            ),
+                            Text("    ", style: TextStyle(fontSize: 20)),
+                            imageCarousel,
+                            Text("  "),
+                            Container(
+                                height: 300,
+                                child: GridView.builder(
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3),
+                                  itemCount: list.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) => Card(
+                                    elevation: 0,
+                                    color: Colors.transparent,
+                                    shape: CircleBorder(),
+                                    //  borderRadius: BorderRadius.all(Radius.circular(100))),
+                                    child: InkWell(
+                                      splashColor: Colors.transparent,
+                                      onTap: () {
+                                        product.li = documents;
+                                        product.he = documents[index].id;
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => product()),
+                                        );
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                documents[index].id + " Tapped",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 2,
+                                            backgroundColor: Colors.black,
+                                            textColor: Colors.white,
+                                            fontSize: 14.0);
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          /*    FadeInImage.memoryNetwork(
+                                placeholder: kTransparentImage,
+                                fit: BoxFit.cover,
+                                height: 90,
+                                width: 150,
+                                image: list[index][2]),*/
+                                          Container(
+                                            //radius: 50,
+                                            //backgroundColor: Colors.blueGrey,
+
+                                            decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.deepPurple
+                                                        .withOpacity(0.4),
+                                                    spreadRadius: 2,
+                                                    blurRadius: 8,
+                                                    offset: Offset(0,
+                                                        3), // changes position of shadow
+                                                  ),
+                                                ],
+                                                color: Colors.transparent,
+                                                border: Border.all(
+                                                  color: Color.fromARGB(
+                                                      255, 203, 126, 216),
+                                                  width: .8,
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(30.0))),
+                                            height: 90,
+                                            width: 90,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+
+                                              //radius: 49,
+                                              //backgroundImage: NetworkImage(
+                                              child: FadeInImage.memoryNetwork(
+                                                placeholder: kTransparentImage,
+                                                image:
+                                                    documents[index].get("img"),
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            "  ",
+                                            style: TextStyle(fontSize: 6),
+                                          ),
+                                          Text(documents[index].id,
+                                              style: TextStyle(fontSize: 12))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                          ];
+                        } else {
+                          children = const <Widget>[
+                            Center(
+                                child: SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(),
+                            )),
+                            Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: Text('Awaiting result...'),
+                            )
+                          ];
+                        }
+                        return Column(children: children);
+                      }),
+                ),
+              ))
+        ]),
+        onRefresh: () {
+          return Future.delayed(Duration(seconds: 1), () {
+            /// adding elements in list after [1 seconds] delay
+            /// to mimic network call
+            ///
+            /// Remember: setState is necessary so that
+            /// build method will run again otherwise
+            /// list will not show all elements
+            setState(() {});
+          });
+        });
   }
 }
