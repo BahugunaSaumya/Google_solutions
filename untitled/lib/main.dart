@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<Timer> loadScreen() async {
-    return Timer(Duration(seconds: 1), _loadUI);
+    return Timer(Duration(seconds: 2), _loadUI);
   }
 
   void _loadUI() async {

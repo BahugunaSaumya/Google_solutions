@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmers_market/home_screens/navigation_screens/myhome.dart';
 import 'package:flutter/material.dart';
 
@@ -8,23 +9,35 @@ void main() {
 }
 
 // a function to return url
-List checkurl(List lis, String hell) {
+DocumentSnapshot checkurl(List<DocumentSnapshot> lis, String hell) {
   //print(lis);
   // print(hell);
-  List temp = [
-    0,
-    "Not found",
-    "https://previews.123rf.com/images/kaymosk/kaymosk1804/kaymosk180400005/99776312-error-404-page-not-found-error-with-glitch-effect-on-screen-vector-illustration-for-your-design.jpg"
-  ];
+
   for (int i = 0; i < lis.length; i++) {
-    if (lis[i][1].toString().compareTo(hell) == 0) {
+    if (lis[i].id.toString().compareTo(hell) == 0) {
       // print(lis[i][1]);
       return lis[i];
     }
   }
-  return temp;
+
+  return null;
 }
 
+/*remove later just return not found varibale from database
+DocumentSnapshot notfound(List lis) {
+  //print(lis);
+  // print(hell);
+
+  for (int i = 0; i < lis.length; i++) {
+    if (lis[i].id.toString().compareTo("Not Found") == 0) {
+      // print(lis[i][1]);
+      return lis[i];
+    }
+  }
+
+  return null;
+}
+*/
 class product extends StatelessWidget {
   @override
   static List li;
@@ -90,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 //print(list);
-    List url = checkurl(list, hello);
+    DocumentSnapshot url = checkurl(list, hello);
 
     //"https://previews.123rf.com/images/kaymosk/kaymosk1804/kaymosk180400005/99776312-error-404-page-not-found-error-with-glitch-effect-on-screen-vector-illustration-for-your-design.jpg"; //checkurl(list, hello);
     return Scaffold(
@@ -159,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.all(3),
                   child: Center(
                     child: Text(
-                      url[1],
+                      url.id,
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
@@ -268,17 +281,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   flex: 1,
                   child: Container(
                     height: 20,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-      BoxShadow(
-        color: Colors.grey.withOpacity(0.5),
-        spreadRadius: 5,
-        blurRadius: 7,
-        offset: Offset(0, 3), // changes position of shadow
-      ),
-    ],
-                        border: Border.all(color: Colors.black12, width: 1)),
-                    child: Image.network(url[2]),
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ], border: Border.all(color: Colors.black12, width: 1)),
+                    child: Image.network(url.get("img")),
                   ),
                 ),
                 Expanded(
@@ -288,7 +299,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.black12, width: 1)),
                     child: Image.network(
-                      url[2],
+                      url.get("img"),
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -304,7 +315,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: myBoxDecoration(Colors.green, Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
-                    url[2],
+                    url.get("img"),
                     height: 40,
                     width: 40,
                     fit: BoxFit.cover,
@@ -315,7 +326,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
-                    url[2],
+                    url.get("img"),
                     height: 40,
                     width: 40,
                     fit: BoxFit.cover,
@@ -326,7 +337,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
-                    url[2],
+                    url.get("img"),
                     height: 40,
                     width: 40,
                     fit: BoxFit.cover,
@@ -337,7 +348,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       myBoxDecoration(Colors.grey[300], Colors.grey[300]),
                   margin: EdgeInsets.only(right: 8),
                   child: Image.network(
-                    url[2],
+                    url.get("img"),
                     height: 40,
                     width: 40,
                     fit: BoxFit.cover,

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 import 'logincustomer.dart';
 import 'loginfarmer.dart';
 
@@ -21,14 +20,14 @@ class new_customer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: _title,
       home: Scaffold(
-        appBar: AppBar(title: new Text(
-          "New Customer",
-          style: new TextStyle(color: Colors.white),
-        ),
+        appBar: AppBar(
+          title: new Text(
+            "New Customer",
+            style: new TextStyle(color: Colors.white),
+          ),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
             onPressed: () {
@@ -37,25 +36,27 @@ class new_customer extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => loginCustomer()),
               );
             },
-          ),),
-        body:  MyStatelessWidget(),
+          ),
+        ),
+        body: MyStatelessWidget(),
       ),
     );
   }
 }
 
 class MyStatelessWidget extends StatelessWidget {
-   MyStatelessWidget({Key key}) : super(key: key);
-   final   name = TextEditingController();
-  final   email = TextEditingController();
-   final   phone = TextEditingController();
-   final   address = TextEditingController();
-   final   password = TextEditingController();
+  MyStatelessWidget({Key key}) : super(key: key);
+  final name = TextEditingController();
+  final email = TextEditingController();
+  final phone = TextEditingController();
+  final address = TextEditingController();
+  final password = TextEditingController();
 
-
-   @override
+  @override
   Widget build(BuildContext context) {
-    CollectionReference customers = FirebaseFirestore.instance.collection('Customers');
+
+    CollectionReference customers =
+        FirebaseFirestore.instance.collection('Customers');
     return ListView(padding: const EdgeInsets.all(8), children: <Widget>[
       Column(children: <Widget>[
         Padding(
@@ -108,7 +109,6 @@ class MyStatelessWidget extends StatelessWidget {
             ),
           ),
         ),
-
         const SizedBox(height: 40),
         ClipRRect(
           borderRadius: BorderRadius.circular(4),
@@ -134,9 +134,12 @@ class MyStatelessWidget extends StatelessWidget {
                   textStyle: const TextStyle(fontSize: 20),
                 ),
                 onPressed: () async {
+                  
                   FirebaseFirestore db;
                   db = FirebaseFirestore.instance;
-                  final userDocRef = FirebaseFirestore.instance.collection('Customers').doc(email.text);
+                  final userDocRef = FirebaseFirestore.instance
+                      .collection('Customers')
+                      .doc(email.text);
                   final doc = await userDocRef.get();
                   if (doc.exists) {
                     showDialog(
@@ -149,8 +152,7 @@ class MyStatelessWidget extends StatelessWidget {
                         );
                       },
                     );
-                  }
-                  else {
+                  } else {
                     final customer = <String, String>{
                       "Name": name.text,
                       "Email": email.text,
