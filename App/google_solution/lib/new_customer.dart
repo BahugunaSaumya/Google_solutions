@@ -54,7 +54,6 @@ class MyStatelessWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     CollectionReference customers =
         FirebaseFirestore.instance.collection('Customers');
     return ListView(padding: const EdgeInsets.all(8), children: <Widget>[
@@ -134,12 +133,10 @@ class MyStatelessWidget extends StatelessWidget {
                   textStyle: const TextStyle(fontSize: 20),
                 ),
                 onPressed: () async {
-                  
-                  FirebaseFirestore db;
-                  db = FirebaseFirestore.instance;
-                  final userDocRef = FirebaseFirestore.instance
-                      .collection('Customers')
-                      .doc(email.text);
+                  FirebaseFirestore db = FirebaseFirestore.instance;
+                  db.settings = const Settings(persistenceEnabled: false);
+
+                  final userDocRef = db.collection('Customers').doc(email.text);
                   final doc = await userDocRef.get();
                   if (doc.exists) {
                     showDialog(
