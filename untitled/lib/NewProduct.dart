@@ -15,25 +15,28 @@ void main() {
   runApp(const new_product());
 }
 
-class new_product extends StatelessWidget {
+class new_product extends StatefulWidget {
   static var user_id;
 
 
   static var de;
   static String se;
-  static List<DocumentSnapshot> it;
+
   const new_product({Key key}) : super(key: key);
 
   static const String _title = 'New product';
 
   @override
+  State<new_product> createState() => _new_productState();
+}
+
+class _new_productState extends State<new_product> {
+  @override
   Widget build(BuildContext context) {
-    MyStatelessWidget.user_id=user_id;
-    MyStatelessWidget.items = it;
-    MyStatelessWidget.decide = de;
-    MyStatelessWidget.selectedValue = se;
+
+
     return MaterialApp(
-      title: _title,
+      title: new_product._title,
       home: Scaffold(
         appBar: AppBar(
           title: new Text(
@@ -56,41 +59,46 @@ class new_product extends StatelessWidget {
   }
 }
 
-class MyStatelessWidget extends StatelessWidget {
+class MyStatelessWidget extends StatefulWidget {
   MyStatelessWidget({Key key}) : super(key: key);
-  static var user_id;
-  static String selectedValue;
-  var changedvalue;
-  static var decide;
-  static int pass;
-  static List<String> categories = new List();
-  final _formKey = GlobalKey<FormState>();
 
+  static String selectedValue;
+  static var decide;
+
+  static List<String> categories = new List();
   static List<DocumentSnapshot> documents;
-  static List<DocumentSnapshot> items;
+
+  @override
+  State<MyStatelessWidget> createState() => _MyStatelessWidgetState();
+}
+
+class _MyStatelessWidgetState extends State<MyStatelessWidget> {
+  var changedvalue="";
+  String selectedValue="";
+  String decide;
+  static var user_id=new_product.user_id;
+
+  List<DocumentSnapshot> documents=[];
+  final _formKey = GlobalKey<FormState>();
+  int pass;
+   List<DocumentSnapshot> items=[];
 
   Future<void> readExcelFile() async {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
     FirebaseFirestore db = FirebaseFirestore.instance;
-    print("hello");
-    if (selectedValue == null) {
-      selectedValue =
-          "Select value"; // change value for comapre to function as well on changing this value line- 168 and 233
-    }
-    if (decide != false) {
-      decide = true;
-    }
+
+
 
 
     final result = await db.collection('Categories').get();
 
-    documents = result.docs;
+    documents = result.docs ;
     if (items == null) {
       items = [];
     }
-    print(decide);
-    print(selectedValue);
+
+
   }
 
   Future<void> getitem() async {
@@ -109,14 +117,15 @@ class MyStatelessWidget extends StatelessWidget {
 
     items = result.docs;
 
-    print(items.length);
+    print("hello");
+    print(items);
   }
 
   @override
   Widget build(BuildContext context) {
     TextEditingController qty = TextEditingController();
 
-    print(categories);
+    print(MyStatelessWidget.categories);
     return Scaffold(
         body: Form(
             key: _formKey,
@@ -146,7 +155,7 @@ class MyStatelessWidget extends StatelessWidget {
                               ),
                               isExpanded: true,
                               hint: Text(
-                                selectedValue,
+                                "Select a category",
                                 style: TextStyle(fontSize: 14),
                               ),
                               icon: const Icon(
@@ -173,7 +182,7 @@ class MyStatelessWidget extends StatelessWidget {
                                   .toList(),
                               validator: (value) {
                                 if (value == null &&
-                                    selectedValue.compareTo("Select value") ==
+                                    MyStatelessWidget.selectedValue.compareTo("Select value") ==
                                         0) {
                                   return 'Please select gender.';
                                 }
@@ -185,18 +194,14 @@ class MyStatelessWidget extends StatelessWidget {
                                 print(selectedValue);
                                 new_product.de = false;
                                 getitem();
-                                new_product.it = items;
-                                new_product.se = selectedValue;
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => new_product()),
-                                );
+
+                                new_product.se = MyStatelessWidget.selectedValue;
+                                setState(() {});
                               },
                               onSaved: (changedvalue) {},
                             ),
                             IgnorePointer(
-                                ignoring: decide,
+                                ignoring: false,
                                 child: DropdownButtonFormField2(
                                   decoration: InputDecoration(
                                     //Add isDense true and zero Padding.
@@ -232,15 +237,14 @@ class MyStatelessWidget extends StatelessWidget {
                                               item.id,
                                               style: TextStyle(
                                                 fontSize: 14,
-                                                color:
-                                                    decide ? Colors.grey : null,
+
                                               ),
                                             ),
                                           ))
                                       .toList(),
                                   validator: (value) {
                                     if (value == null &&
-                                        selectedValue
+                                        MyStatelessWidget.selectedValue
                                                 .compareTo("Select value") ==
                                             0) {
                                       return 'Please select gender.';
@@ -248,6 +252,7 @@ class MyStatelessWidget extends StatelessWidget {
                                   },
                                   onChanged: (value) {
                                     changedvalue = value.toString();
+                                    print(".....^^^^^^^^^^^^^^^.........");
                                     print(changedvalue);
                                   },
                                   onSaved: (value) {},
@@ -269,8 +274,8 @@ class MyStatelessWidget extends StatelessWidget {
                               onPressed: () async {
                                 print(user_id);
 
-                                FirebaseFirestore db = FirebaseFirestore.instance;
-                                final userDocRef = db.collection("Farmer's Item").doc(user_id).collection(selectedValue).doc(changedvalue);
+
+                                final userDocRef = FirebaseFirestore.instance.collection("Farmer's Item").doc(user_id).collection(selectedValue).doc(changedvalue);
 
 
 
@@ -283,7 +288,7 @@ class MyStatelessWidget extends StatelessWidget {
                                   onError: (e) => print("Error getting document: $e"),
                                 );
                                 final Qty=<String, int>{
-                                  "Qty":(5),
+                                  "Qty":int.parse(qty.text)+pass,
                                 };
                                 userDocRef.set(Qty)
                                     .onError((e, _) => print("Error writing document: $e"));
