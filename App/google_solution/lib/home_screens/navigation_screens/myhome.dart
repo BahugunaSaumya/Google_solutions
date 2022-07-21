@@ -52,11 +52,12 @@ class _MyHomeState extends State<MyHome> {
       animationDuration: Duration(milliseconds: 3000),
     ),
   );
-  static List list = new List();
+
   static List<DocumentSnapshot> documents;
   Future<void> readExcelFile() async {
-    final result =
-        await FirebaseFirestore.instance.collection('Categories').get();
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    db.settings = const Settings(persistenceEnabled: false);
+    final result = await db.collection('Categories').get();
 
     documents = result.docs;
     print(documents.length);
@@ -64,24 +65,6 @@ class _MyHomeState extends State<MyHome> {
 
   @override
   Widget build(BuildContext context) {
-    // var file = await rootBundle.load("assets/$fileName");
-    // var bytes = File(file).readAsBytesSync();
-    // var excel = Excel.decodeBytes(bytes);
-
-    /*list = [
-      [
-        1,
-        "Dairy",
-        "https://www.dairyfoods.com/ext/resources/DF/2020/August/df-100/GettyImages-1194287257.jpg?1597726305"
-      ],
-      [
-        2,
-        "TTTTT",
-        "https://www.dairyfoods.com/ext/resources/DF/2020/August/df-100/GettyImages-1194287257.jpg?1597726305"
-      ]
-    ];
-*/
-    var flag = 0;
     return RefreshIndicator(
         child: Stack(children: [
           Scaffold(
@@ -140,12 +123,6 @@ class _MyHomeState extends State<MyHome> {
                                           CrossAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        /*    FadeInImage.memoryNetwork(
-                                placeholder: kTransparentImage,
-                                fit: BoxFit.cover,
-                                height: 90,
-                                width: 150,
-                                image: list[index][2]),*/
                                         Container(
                                             decoration: BoxDecoration(
                                               color: Colors.white,
@@ -186,14 +163,14 @@ class _MyHomeState extends State<MyHome> {
                             ),
                             Text("    ", style: TextStyle(fontSize: 20)),
                             imageCarousel,
-                            Text("  "),
+                            Text("  ", style: TextStyle(fontSize: 4)),
                             Container(
                                 height: 300,
                                 child: GridView.builder(
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 3),
-                                  itemCount: list.length,
+                                  itemCount: documents.length,
                                   itemBuilder:
                                       (BuildContext context, int index) => Card(
                                     elevation: 0,
@@ -225,16 +202,7 @@ class _MyHomeState extends State<MyHome> {
                                             CrossAxisAlignment.center,
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
-                                          /*    FadeInImage.memoryNetwork(
-                                placeholder: kTransparentImage,
-                                fit: BoxFit.cover,
-                                height: 90,
-                                width: 150,
-                                image: list[index][2]),*/
                                           Container(
-                                            //radius: 50,
-                                            //backgroundColor: Colors.blueGrey,
-
                                             decoration: BoxDecoration(
                                                 boxShadow: [
                                                   BoxShadow(
@@ -303,12 +271,6 @@ class _MyHomeState extends State<MyHome> {
         ]),
         onRefresh: () {
           return Future.delayed(Duration(seconds: 1), () {
-            /// adding elements in list after [1 seconds] delay
-            /// to mimic network call
-            ///
-            /// Remember: setState is necessary so that
-            /// build method will run again otherwise
-            /// list will not show all elements
             setState(() {});
           });
         });

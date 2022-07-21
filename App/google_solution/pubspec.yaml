@@ -23,6 +23,8 @@ dependencies:
   transparent_image: ^2.0.0
   carousel_pro: ^1.0.0
   fluttertoast: ^8.0.9
+  dropdown_button2: ^1.6.3
+
   flutter:
     sdk: flutter
 
