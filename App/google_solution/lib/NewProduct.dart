@@ -37,6 +37,7 @@ class _new_productState extends State<new_product> {
     return MaterialApp(
       title: new_product._title,
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
             title: new Text(
               "Add new product",
@@ -157,7 +158,6 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
     items = result.docs;
 
     print("hello");
-    print(items[2].id);
   }
 
   @override
@@ -165,7 +165,9 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
     TextEditingController qty = TextEditingController();
 
     print(MyStatelessWidget.categories);
+
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Form(
             child: FutureBuilder<void>(
                 future: readExcelFile(),
@@ -299,6 +301,7 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                                   },
                                   onChanged: (value) {
                                     changedvalue = value.toString();
+
                                     checkvalue();
                                     print(changedvalue);
                                   },
@@ -317,29 +320,36 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                             const SizedBox(height: 100),
                             TextButton(
                               onPressed: () async {
-                                print(user_id);
+                                if (changedvalue == "") {
+                                  showAlertDialog(context);
+                                } else {
+                                  print(user_id);
 
-                                userDocRef = FirebaseFirestore.instance
-                                    .collection("Farmer's Item")
-                                    .doc(user_id)
-                                    .collection(selectedValue)
-                                    .doc(changedvalue);
-
-                                await userDocRef.get().then(
-                                  (DocumentSnapshot doc) {
-                                    final data =
-                                        doc.data() as Map<String, dynamic>;
-                                    print(data);
-                                    pass = data["Qty"];
-                                  },
-                                  onError: (e) =>
-                                      print("Error getting document: $e"),
-                                );
-                                print(pass);
-                                final Qty = <String, int>{
-                                  "Qty": int.parse(qty.text) + pass,
-                                };
-                                await userDocRef.set(Qty);
+                                  userDocRef = FirebaseFirestore.instance
+                                      .collection("Farmer's Item")
+                                      .doc(user_id)
+                                      .collection(selectedValue)
+                                      .doc(changedvalue);
+                                  if (pass == "") {
+                                    showAlertDialog(context);
+                                  } else {
+                                    await userDocRef.get().then(
+                                      (DocumentSnapshot doc) {
+                                        final data =
+                                            doc.data() as Map<String, dynamic>;
+                                        print(data);
+                                        pass = data["Qty"];
+                                      },
+                                      onError: (e) =>
+                                          print("Error getting document: $e"),
+                                    );
+                                    print(pass);
+                                    final Qty = <String, int>{
+                                      "Qty": int.parse(qty.text) + pass,
+                                    };
+                                    await userDocRef.set(Qty);
+                                  }
+                                }
                               },
                               child: const Text('Submit'),
                             ),
