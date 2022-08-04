@@ -75,7 +75,7 @@ class MyStatelessWidget extends StatefulWidget {
 
 class _MyStatelessWidgetState extends State<MyStatelessWidget> {
   final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
-  var changedvalue = "";
+  String changedvalue = "";
   String selectedValue = "";
 
   static var userDocRef;
@@ -123,9 +123,10 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
         .set({'Qty': 0});
 
     print(selectedValue);
+    print(changedvalue);
     print("duck");
     print(temp);
-    if (temp == [] || temp.isEmpty) {
+    if (temp == []) {
       /*Fluttertoast.showToast(
           msg: "No such category exist in your Database",
           toastLength: Toast.LENGTH_SHORT,
@@ -161,9 +162,10 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController qty = TextEditingController();
+  TextEditingController qty = TextEditingController();
+  TextEditingController url = TextEditingController();
 
+  Widget build(BuildContext context) {
     print(MyStatelessWidget.categories);
 
     return Scaffold(
@@ -225,7 +227,7 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                                     MyStatelessWidget.selectedValue
                                             .compareTo("Select value") ==
                                         0) {
-                                  return 'Please select gender.';
+                                  return 'Please select value.';
                                 }
                               },
                               onChanged: (value) {
@@ -317,20 +319,87 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                                 labelText: 'Qty *',
                               ),
                             ),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              controller: url,
+                              decoration: const InputDecoration(
+                                icon: Icon(Icons.add),
+                                hintText:
+                                    'Enter a url of an image related to the product',
+                                labelText: 'Url',
+                              ),
+                            ),
                             const SizedBox(height: 100),
                             TextButton(
                               onPressed: () async {
-                                if (changedvalue == "") {
+                                if (changedvalue.compareTo("") == 0) {
                                   showAlertDialog(context);
                                 } else {
                                   print(user_id);
 
-                                  userDocRef = FirebaseFirestore.instance
+                                  final docRef = await FirebaseFirestore
+                                      .instance
+                                      .collection("Categories")
+                                      .doc(selectedValue)
+                                      .collection("Items")
+                                      .doc(changedvalue);
+                                  int temp = 0;
+                                  await docRef.get().then(
+                                    (DocumentSnapshot doc) {
+                                      final data =
+                                          doc.data() as Map<String, dynamic>;
+                                      temp = temp + data["Qty"];
+                                    },
+                                    onError: (e) =>
+                                        print("Error getting document: $e"),
+                                  );
+                                  temp = int.parse(qty.text) + temp;
+                                  FirebaseFirestore.instance
+                                      .collection("Categories")
+                                      .doc(selectedValue)
+                                      .collection("Items")
+                                      .doc(changedvalue)
+                                      .set({"Qty": temp});
+                                  final docRef2 = await FirebaseFirestore
+                                      .instance
+                                      .collection("Categories")
+                                      .doc(selectedValue)
+                                      .collection("Items")
+                                      .doc(changedvalue)
+                                      .collection("Producers")
+                                      .doc(user_id);
+                                  temp = 0;
+                                  await docRef2
+                                      .get()
+                                      .then((DocumentSnapshot doc) {
+                                    if (doc.exists) {
+                                      final data =
+                                          doc.data() as Map<String, dynamic>;
+                                      temp = int.parse(qty.text) + data["Qty"];
+                                      FirebaseFirestore.instance
+                                          .collection("Categories")
+                                          .doc(selectedValue)
+                                          .collection("Items")
+                                          .doc(changedvalue)
+                                          .collection("Producers")
+                                          .doc(user_id)
+                                          .set({'Qty': temp});
+                                    } else
+                                      FirebaseFirestore.instance
+                                          .collection("Categories")
+                                          .doc(selectedValue)
+                                          .collection("Items")
+                                          .doc(changedvalue)
+                                          .collection("Producers")
+                                          .doc(user_id)
+                                          .set({'Qty': int.parse(qty.text)});
+                                  });
+                                  userDocRef = await FirebaseFirestore.instance
                                       .collection("Farmer's Item")
                                       .doc(user_id)
                                       .collection(selectedValue)
                                       .doc(changedvalue);
-                                  if (pass == "") {
+                                  if (qty.text == "") {
                                     showAlertDialog(context);
                                   } else {
                                     await userDocRef.get().then(
@@ -344,10 +413,12 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                                           print("Error getting document: $e"),
                                     );
                                     print(pass);
-                                    final Qty = <String, int>{
+
+                                    //await userDocRef.set(Qty);
+                                    await userDocRef.set({
                                       "Qty": int.parse(qty.text) + pass,
-                                    };
-                                    await userDocRef.set(Qty);
+                                      "img": url.text
+                                    });
                                   }
                                 }
                               },

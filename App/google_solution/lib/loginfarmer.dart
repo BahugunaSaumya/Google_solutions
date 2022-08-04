@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmers_market/home_screens/farmers_home_screen.dart';
 import 'package:farmers_market/home_screens/main_view.dart';
+import 'package:farmers_market/new_farmers.dart';
 import 'package:flutter/material.dart';
 
 import 'NewProduct.dart';
@@ -20,10 +22,11 @@ class loginFarmer extends StatelessWidget {
     return MaterialApp(
       title: _title,
       home: Scaffold(
-        appBar: AppBar(title: new Text(
-          "New Customer",
-          style: new TextStyle(color: Colors.white),
-        ),
+        appBar: AppBar(
+          title: new Text(
+            "New Customer",
+            style: new TextStyle(color: Colors.white),
+          ),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
             onPressed: () {
@@ -32,22 +35,27 @@ class loginFarmer extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => landing()),
               );
             },
-          ),),
-        body:  MyStatelessWidget(),
+          ),
+        ),
+        body: MyStatelessWidget(),
       ),
     );
   }
 }
 
-class MyStatelessWidget extends StatelessWidget {
-
+class MyStatelessWidget extends StatefulWidget {
   MyStatelessWidget({Key key}) : super(key: key);
-  final   myController1 = TextEditingController();
-  final   myController2 = TextEditingController();
+
+  @override
+  State<MyStatelessWidget> createState() => _MyStatelessWidgetState();
+}
+
+class _MyStatelessWidgetState extends State<MyStatelessWidget> {
+  final myController1 = TextEditingController();
+  final myController2 = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Center(
-
       child: SingleChildScrollView(
         padding: EdgeInsets.all(30),
         child: Column(
@@ -57,7 +65,7 @@ class MyStatelessWidget extends StatelessWidget {
             Container(
                 width: 180.0,
                 height: 30.0,
-                child:  TextField(
+                child: TextField(
                   controller: myController1,
                   obscureText: false,
                   maxLines: 1,
@@ -74,7 +82,7 @@ class MyStatelessWidget extends StatelessWidget {
             Container(
                 width: 180.0,
                 height: 30.0,
-                child:  TextField(
+                child: TextField(
                   controller: myController2,
                   maxLines: 1,
                   obscureText: true,
@@ -114,7 +122,9 @@ class MyStatelessWidget extends StatelessWidget {
                     onPressed: () async {
                       FirebaseFirestore db;
                       db = FirebaseFirestore.instance;
-                      final userDocRef = FirebaseFirestore.instance.collection("Farmer's Item").doc(myController1.text);
+                      final userDocRef = FirebaseFirestore.instance
+                          .collection("Farmer's Item")
+                          .doc(myController1.text);
                       final doc = await userDocRef.get();
                       if (!doc.exists) {
                         showDialog(
@@ -127,23 +137,21 @@ class MyStatelessWidget extends StatelessWidget {
                             );
                           },
                         );
-                      }
-                      else {
-                        final docRef = db.collection("Farmer's Item").doc(myController1.text);
+                      } else {
+                        final docRef = db
+                            .collection("Farmer's Item")
+                            .doc(myController1.text);
 
                         docRef.get().then(
-                              (DocumentSnapshot doc) {
+                          (DocumentSnapshot doc) {
                             final data = doc.data() as Map<String, dynamic>;
-                            String pass=data["Password"];
+                            String pass = data["Password"];
                             print(pass);
-                            if(pass.compareTo(myController2.text)==0)
-                            {
-                              new_product.user_id=myController1.text;
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) => new_product()));
-                            }
-                            else
-                            {
+                            if (pass.compareTo(myController2.text) == 0) {
+                              new_product.user_id = myController1.text;
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => farmers_home_screen()));
+                            } else {
                               showDialog(
                                 context: context,
                                 builder: (context) {
@@ -154,13 +162,11 @@ class MyStatelessWidget extends StatelessWidget {
                                   );
                                 },
                               );
-
                             }
                           },
                           onError: (e) => print("Error getting document: $e"),
                         );
                       }
-
                     },
                     child: const Text('Login'),
                   ),
@@ -177,7 +183,7 @@ class MyStatelessWidget extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => new_customer()),
+                  MaterialPageRoute(builder: (context) => new_farmers()),
                 );
               },
               child: const Text('Create a new account'),

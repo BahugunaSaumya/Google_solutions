@@ -51,17 +51,25 @@ class AddNewDocument extends StatelessWidget {
   }
 }
 
-class new_item extends StatelessWidget {
+class new_item extends StatefulWidget {
   new_item({Key key}) : super(key: key);
-  //final category = TextEditingController();
+
+  @override
+  State<new_item> createState() => _new_itemState();
+}
+
+class _new_itemState extends State<new_item> {
   final Item = TextEditingController();
   final Qty = TextEditingController();
   final user_id = AddNewDocument.user;
   final category = AddNewDocument.cate;
+  final url = TextEditingController();
+  //final category = TextEditingController();
   @override
   Widget build(BuildContext context) {
     CollectionReference customers =
         FirebaseFirestore.instance.collection("Farmer's Items");
+    print(category);
     return ListView(padding: const EdgeInsets.all(8), children: <Widget>[
       Column(children: <Widget>[
         Padding(
@@ -82,6 +90,17 @@ class new_item extends StatelessWidget {
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               labelText: 'Qty',
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+          child: TextFormField(
+            keyboardType: TextInputType.number,
+            controller: url,
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              labelText: 'Please add an image url',
             ),
           ),
         ),
@@ -120,7 +139,23 @@ class new_item extends StatelessWidget {
                         .doc(user_id)
                         .collection(category)
                         .doc(Item.text)
-                        .set({'Qty': int.parse(Qty.text)});
+                        .set({'Qty': int.parse(Qty.text), 'img': url.text});
+
+                    db
+                        .collection("Categories")
+                        .doc(category)
+                        .collection("Items")
+                        .doc(Item.text)
+                        .set({'Qty': Qty.text, 'img': url.text});
+                    db
+                        .collection("Categories")
+                        .doc(category)
+                        .collection("Items")
+                        .doc(Item.text)
+                        .collection("Producers")
+                        .doc(user_id)
+                        .set({'Qty': Qty.text, 'img': url.text});
+
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => new_product()));
                   }
