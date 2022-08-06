@@ -13,10 +13,6 @@ import 'firebase_options.dart';
 import 'logincustomer.dart';
 import 'loginfarmer.dart';
 
-void main() {
-  runApp(const new_product());
-}
-
 class new_product extends StatefulWidget {
   static var user_id;
 
@@ -32,48 +28,6 @@ class new_product extends StatefulWidget {
 }
 
 class _new_productState extends State<new_product> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: new_product._title,
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-            title: new Text(
-              "Add new product",
-              style: new TextStyle(color: Colors.white),
-            ),
-            actions: [
-              new IconButton(
-                icon: new Icon(Icons.logout),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => loginFarmer()),
-                  );
-                },
-              ),
-            ]),
-        body: MyStatelessWidget(),
-      ),
-    );
-  }
-}
-
-class MyStatelessWidget extends StatefulWidget {
-  MyStatelessWidget({Key key}) : super(key: key);
-
-  static String selectedValue;
-  static var decide;
-
-  static List<String> categories = new List();
-  static List<DocumentSnapshot> documents;
-
-  @override
-  State<MyStatelessWidget> createState() => _MyStatelessWidgetState();
-}
-
-class _MyStatelessWidgetState extends State<MyStatelessWidget> {
   final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
   String changedvalue = "";
   String selectedValue = "";
@@ -166,8 +120,6 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
   TextEditingController url = TextEditingController();
 
   Widget build(BuildContext context) {
-    print(MyStatelessWidget.categories);
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Form(
@@ -224,8 +176,7 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                                   .toList(),
                               validator: (value) {
                                 if (value == null &&
-                                    MyStatelessWidget.selectedValue
-                                            .compareTo("Select value") ==
+                                    selectedValue.compareTo("Select value") ==
                                         0) {
                                   return 'Please select value.';
                                 }
@@ -238,8 +189,7 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                                 new_product.de = false;
                                 getitem();
 
-                                new_product.se =
-                                    MyStatelessWidget.selectedValue;
+                                new_product.se = selectedValue;
                                 setState(() {
                                   selectedValue = value.toString();
                                   reset();
@@ -295,7 +245,7 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                                       .toList(),
                                   validator: (value) {
                                     if (value == null &&
-                                        MyStatelessWidget.selectedValue
+                                        selectedValue
                                                 .compareTo("Select value") ==
                                             0) {
                                       return 'Please select value';

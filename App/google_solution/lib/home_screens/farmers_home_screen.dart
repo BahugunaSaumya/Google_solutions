@@ -1,4 +1,6 @@
+import 'package:farmers_market/AddNewDocument.dart';
 import 'package:farmers_market/NewProduct.dart';
+import 'package:farmers_market/landing.dart';
 import 'package:flutter/material.dart';
 import 'widgets/fab.dart';
 
@@ -10,7 +12,7 @@ class farmers_home_screen extends StatefulWidget {
 class _HomeScreenState extends State<farmers_home_screen> {
   int _currentBottomTab = 0;
 
-  List<Widget> pages = [new_product()];
+  List<Widget> pages = [new_product(), AddNewDocument()];
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class _HomeScreenState extends State<farmers_home_screen> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: Icon(
-          Icons.add,
+          Icons.animation,
           color: Colors.grey.shade800,
         ),
         title: Text(
@@ -28,8 +30,14 @@ class _HomeScreenState extends State<farmers_home_screen> {
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Icon(
-              Icons.send,
+            child: new IconButton(
+              icon: new Icon(Icons.logout),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => landing()),
+                );
+              },
             ),
           ),
         ],
@@ -37,7 +45,11 @@ class _HomeScreenState extends State<farmers_home_screen> {
       body: pages[_currentBottomTab],
       floatingActionButton: InstagramFab(
         icon: Icons.add,
-        onTap: () {},
+        onTap: () {
+          setState(() {
+            _currentBottomTab = 1;
+          });
+        },
       ),
       bottomNavigationBar: _buildBottomNavigationBar(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

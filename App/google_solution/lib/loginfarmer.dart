@@ -51,6 +51,54 @@ class MyStatelessWidget extends StatefulWidget {
 }
 
 class _MyStatelessWidgetState extends State<MyStatelessWidget> {
+  Future<void> login() async {
+    FirebaseFirestore db;
+    db = FirebaseFirestore.instance;
+    final userDocRef = FirebaseFirestore.instance
+        .collection("Farmer's Item")
+        .doc(myController1.text);
+    final doc = await userDocRef.get();
+    if (!doc.exists) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            // Retrieve the text the that user has entered by using the
+            // TextEditingController.
+            content: Text("Account doesn't exist! "),
+          );
+        },
+      );
+    } else {
+      final docRef = db.collection("Farmer's Item").doc(myController1.text);
+
+      docRef.get().then(
+        (DocumentSnapshot doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          String pass = data["Password"];
+          print(pass);
+          if (pass.compareTo(myController2.text) == 0) {
+            new_product.user_id = myController1.text;
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => farmers_home_screen()));
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  // Retrieve the text the that user has entered by using the
+                  // TextEditingController.
+                  content: Text("Wrong Password "),
+                );
+              },
+            );
+          }
+        },
+        onError: (e) => print("Error getting document: $e"),
+      );
+    }
+  }
+
   final myController1 = TextEditingController();
   final myController2 = TextEditingController();
   @override
@@ -94,6 +142,9 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                     contentPadding: EdgeInsets.fromLTRB(7.0, 9.0, 7.0, 9.0),
                     labelText: 'Password',
                   ),
+                  onSubmitted: (String text) {
+                    login();
+                  },
                 )),
             const SizedBox(height: 100),
             ClipRRect(
@@ -120,53 +171,7 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
                       textStyle: const TextStyle(fontSize: 16),
                     ),
                     onPressed: () async {
-                      FirebaseFirestore db;
-                      db = FirebaseFirestore.instance;
-                      final userDocRef = FirebaseFirestore.instance
-                          .collection("Farmer's Item")
-                          .doc(myController1.text);
-                      final doc = await userDocRef.get();
-                      if (!doc.exists) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              // Retrieve the text the that user has entered by using the
-                              // TextEditingController.
-                              content: Text("Account doesn't exist! "),
-                            );
-                          },
-                        );
-                      } else {
-                        final docRef = db
-                            .collection("Farmer's Item")
-                            .doc(myController1.text);
-
-                        docRef.get().then(
-                          (DocumentSnapshot doc) {
-                            final data = doc.data() as Map<String, dynamic>;
-                            String pass = data["Password"];
-                            print(pass);
-                            if (pass.compareTo(myController2.text) == 0) {
-                              new_product.user_id = myController1.text;
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => farmers_home_screen()));
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    // Retrieve the text the that user has entered by using the
-                                    // TextEditingController.
-                                    content: Text("Wrong Password "),
-                                  );
-                                },
-                              );
-                            }
-                          },
-                          onError: (e) => print("Error getting document: $e"),
-                        );
-                      }
+                      login();
                     },
                     child: const Text('Login'),
                   ),

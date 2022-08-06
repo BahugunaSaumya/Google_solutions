@@ -12,65 +12,29 @@ import 'firebase_options.dart';
 import 'logincustomer.dart';
 import 'loginfarmer.dart';
 
-void main() async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const AddNewDocument());
-}
-
 class AddNewDocument extends StatelessWidget {
+  Future<void> initialize() async {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+  }
+
   static var user;
   static var cate;
 
-  const AddNewDocument({Key key}) : super(key: key);
-
-  static const String _title = 'New Item';
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      home: Scaffold(
-        appBar: AppBar(
-          title: new Text(
-            "New Item",
-            style: new TextStyle(color: Colors.white),
-          ),
-          leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => new_product()),
-              );
-            },
-          ),
-        ),
-        body: new_item(),
-      ),
-    );
-  }
-}
-
-class new_item extends StatefulWidget {
-  new_item({Key key}) : super(key: key);
-
-  @override
-  State<new_item> createState() => _new_itemState();
-}
-
-class _new_itemState extends State<new_item> {
   final Item = TextEditingController();
   final Qty = TextEditingController();
-  final user_id = AddNewDocument.user;
-  final category = AddNewDocument.cate;
+  final user_id = user;
+  final category = cate;
   final url = TextEditingController();
   //final category = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    initialize();
     CollectionReference customers =
         FirebaseFirestore.instance.collection("Farmer's Items");
-    print(category);
-    return ListView(padding: const EdgeInsets.all(8), children: <Widget>[
+
+    return Material(
+        child: ListView(padding: const EdgeInsets.all(8), children: <Widget>[
       Column(children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
@@ -166,7 +130,7 @@ class _new_itemState extends State<new_item> {
           ),
         ),
       ])
-    ]);
+    ]));
   }
 }
 
