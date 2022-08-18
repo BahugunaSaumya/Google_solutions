@@ -1,4 +1,5 @@
 import 'package:farmers_market/NewProduct.dart';
+import 'package:farmers_market/home_screens/farmers_home_screen.dart';
 import 'package:farmers_market/home_screens/main_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,23 +13,35 @@ import 'firebase_options.dart';
 import 'logincustomer.dart';
 import 'loginfarmer.dart';
 
-class AddNewDocument extends StatelessWidget {
+class AddNewDocument extends StatefulWidget {
+  static var user;
+  static var cate;
+
+  @override
+  State<AddNewDocument> createState() => _AddNewDocumentState();
+}
+
+class _AddNewDocumentState extends State<AddNewDocument> {
   Future<void> initialize() async {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
   }
 
-  static var user;
-  static var cate;
-
   final Item = TextEditingController();
   final Qty = TextEditingController();
-  final user_id = user;
-  final category = cate;
+
   final url = TextEditingController();
+  final user_id = new_product.user_id;
+
+  final category = new_product.se;
+
   //final category = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    print(category);
+    print("------------------");
+    print(user_id);
+
     initialize();
     CollectionReference customers =
         FirebaseFirestore.instance.collection("Farmer's Items");
@@ -110,7 +123,7 @@ class AddNewDocument extends StatelessWidget {
                         .doc(category)
                         .collection("Items")
                         .doc(Item.text)
-                        .set({'Qty': Qty.text, 'img': url.text});
+                        .set({'Qty': int.parse(Qty.text), 'img': url.text});
                     db
                         .collection("Categories")
                         .doc(category)
@@ -118,10 +131,10 @@ class AddNewDocument extends StatelessWidget {
                         .doc(Item.text)
                         .collection("Producers")
                         .doc(user_id)
-                        .set({'Qty': Qty.text, 'img': url.text});
+                        .set({'Qty': int.parse(Qty.text), 'img': url.text});
 
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => new_product()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => farmers_home_screen()));
                   }
                 },
                 child: const Text('Submit'),

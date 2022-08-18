@@ -1,21 +1,30 @@
 import 'package:farmers_market/AddNewDocument.dart';
 import 'package:farmers_market/NewProduct.dart';
+import 'package:farmers_market/home_screens/navigation_screens/famerprofile.dart';
 import 'package:farmers_market/landing.dart';
 import 'package:flutter/material.dart';
 import 'widgets/fab.dart';
 
 class farmers_home_screen extends StatefulWidget {
-  @override
+  static int _currentBottomTab;
+  static int fl;
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<farmers_home_screen> {
-  int _currentBottomTab = 0;
+  static int _currentBottomTab = farmers_home_screen._currentBottomTab;
 
-  List<Widget> pages = [new_product(), AddNewDocument()];
+  List<Widget> pages = [
+    new new_product(),
+    new AddNewDocument(),
+    new farmerprofile()
+  ];
 
   @override
   Widget build(BuildContext context) {
+    if (_currentBottomTab == null) {
+      _currentBottomTab = 0;
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -43,17 +52,50 @@ class _HomeScreenState extends State<farmers_home_screen> {
         ],
       ),
       body: pages[_currentBottomTab],
-      floatingActionButton: InstagramFab(
+      floatingActionButton: check(_currentBottomTab),
+      /* InstagramFab(
         icon: Icons.add,
         onTap: () {
           setState(() {
-            _currentBottomTab = 1;
+            _currentBottomTab = 0;
           });
         },
-      ),
+      ),*/
       bottomNavigationBar: _buildBottomNavigationBar(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
+  }
+
+  Widget check(int cu) {
+    print(AddNewDocument.cate);
+    print("00000");
+    print(new_product.se);
+
+    print("3232323232");
+    print(AddNewDocument.user);
+
+    print(new_product.flag);
+    print("DFadfadf");
+    if (cu == 0) {
+      return InstagramFab(
+        icon: Icons.add,
+        onTap: () {
+          AddNewDocument.user = new_product.user_id;
+          AddNewDocument.cate = new_product.se;
+          print(AddNewDocument.cate);
+
+          if (AddNewDocument.cate == "") {
+            showAlertDialog(context);
+          } else {
+            setState(() {
+              _currentBottomTab = 1;
+            });
+          }
+        },
+      );
+    } else {
+      return null;
+    }
   }
 
   Widget _buildBottomNavigationBar(BuildContext context) {
@@ -105,14 +147,37 @@ class _HomeScreenState extends State<farmers_home_screen> {
             IconButton(
                 icon: Icon(
                   Icons.person_outline,
-                  color: getColor(3),
+                  color: getColor(2),
                 ),
                 onPressed: () {
-                  refreshUI(3);
+                  refreshUI(2);
                 }),
           ],
         ),
       ),
     );
   }
+}
+
+showAlertDialog(BuildContext context) {
+  // Create button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {},
+  );
+
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("ALERT"),
+    content: Text("Please Fill Details"),
+    actions: [],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
