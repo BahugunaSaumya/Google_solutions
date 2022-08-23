@@ -21,8 +21,8 @@ class InstagramFab extends StatelessWidget {
             shape: BoxShape.circle,
             gradient: LinearGradient(
               colors: [
-                Color(0xffC45471),
-                Color(0xffE77854),
+                Color.fromRGBO(170, 0, 255, 10),
+                Color.fromRGBO(255, 7, 187, 10),
               ],
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,

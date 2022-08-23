@@ -24,7 +24,7 @@ class loginFarmer extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: new Text(
-            "New Customer",
+            "Farmer Login",
             style: new TextStyle(color: Colors.white),
           ),
           leading: new IconButton(

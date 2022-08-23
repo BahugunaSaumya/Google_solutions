@@ -32,6 +32,7 @@ class _HomeScreenState extends State<farmers_home_screen> {
           Icons.animation,
           color: Colors.grey.shade800,
         ),
+        backgroundColor: Colors.pink,
         title: Text(
           "Farmers",
           style: TextStyle(fontSize: 22),
@@ -67,24 +68,14 @@ class _HomeScreenState extends State<farmers_home_screen> {
   }
 
   Widget check(int cu) {
-    print(AddNewDocument.cate);
-    print("00000");
-    print(new_product.se);
-
-    print("3232323232");
-    print(AddNewDocument.user);
-
-    print(new_product.flag);
-    print("DFadfadf");
     if (cu == 0) {
       return InstagramFab(
         icon: Icons.add,
         onTap: () {
           AddNewDocument.user = new_product.user_id;
           AddNewDocument.cate = new_product.se;
-          print(AddNewDocument.cate);
 
-          if (AddNewDocument.cate == "") {
+          if (new_product.se == "") {
             showAlertDialog(context);
           } else {
             setState(() {
@@ -112,50 +103,59 @@ class _HomeScreenState extends State<farmers_home_screen> {
     }
 
     return Container(
-      height: 56,
-      child: BottomAppBar(
-        elevation: 8,
-        shape: CircularNotchedRectangle(),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            IconButton(
-                icon: Icon(
-                  Icons.home,
-                  color: getColor(0),
-                ),
-                onPressed: () {
-                  refreshUI(0);
-                }),
-            IconButton(
-                icon: Icon(Icons.search),
-                color: getColor(1),
-                onPressed: () {
-                  refreshUI(1);
-                }),
-            SizedBox(
-              width: 12,
+        height: 45,
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(50),
+            topRight: Radius.circular(
+              50,
             ),
-            IconButton(
-                icon: Icon(
-                  Icons.favorite_border,
-                  color: getColor(2),
+          ),
+          child: BottomAppBar(
+            color: Colors.amber,
+            elevation: 8,
+            shape: CircularNotchedRectangle(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                IconButton(
+                    icon: Icon(
+                      Icons.home,
+                      color: getColor(0),
+                    ),
+                    onPressed: () {
+                      new_product.se = "";
+                      refreshUI(0);
+                    }),
+                IconButton(
+                    icon: Icon(Icons.search),
+                    color: getColor(1),
+                    onPressed: () {
+                      refreshUI(1);
+                    }),
+                SizedBox(
+                  width: 12,
                 ),
-                onPressed: () {
-                  refreshUI(2);
-                }),
-            IconButton(
-                icon: Icon(
-                  Icons.person_outline,
-                  color: getColor(2),
-                ),
-                onPressed: () {
-                  refreshUI(2);
-                }),
-          ],
-        ),
-      ),
-    );
+                IconButton(
+                    icon: Icon(
+                      Icons.favorite_border,
+                      color: getColor(2),
+                    ),
+                    onPressed: () {
+                      refreshUI(2);
+                    }),
+                IconButton(
+                    icon: Icon(
+                      Icons.person_outline,
+                      color: getColor(2),
+                    ),
+                    onPressed: () {
+                      refreshUI(2);
+                    }),
+              ],
+            ),
+          ),
+        ));
   }
 }
 

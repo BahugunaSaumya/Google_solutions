@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ProfilePic extends StatelessWidget {
   final String profilePic;
@@ -15,7 +16,7 @@ class ProfilePic extends StatelessWidget {
         border: Border.all(color: Theme.of(context).accentColor),
       ),
       child: CircleAvatar(
-        //backgroundImage: Colors.red ,
+        backgroundImage: NetworkImage(profilePic),
         radius: radius ?? 16,
       ),
     );

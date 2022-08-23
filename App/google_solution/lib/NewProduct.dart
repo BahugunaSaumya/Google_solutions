@@ -21,7 +21,6 @@ class new_product extends StatefulWidget {
   static var de;
   static String se;
   new_product() {
-    print("sfsdfsdf");
     se = "";
   }
 
@@ -65,7 +64,7 @@ class _new_productState extends State<new_product> {
 
   Future<void> getvalue() async {
     data = docs.data() as Map<String, dynamic>;
-    print(data);
+
     pass = data["Qty"];
   }
 
@@ -82,10 +81,6 @@ class _new_productState extends State<new_product> {
         .doc(changedvalue)
         .set({'Qty': 0});
 
-    print(selectedValue);
-    print(changedvalue);
-    print("duck");
-    print(temp);
     if (temp == []) {
       /*Fluttertoast.showToast(
           msg: "No such category exist in your Database",
@@ -117,8 +112,6 @@ class _new_productState extends State<new_product> {
         .get();
 
     items = result.docs;
-
-    print("hello");
   }
 
   @override
@@ -198,13 +191,9 @@ class _new_productState extends State<new_product> {
                               getitem();
 
                               setState(() {
-                                print("ssssssssssssss");
                                 selectedValue = value.toString();
                                 new_product.se = selectedValue;
-                                print(new_product.se);
-                                print("---------0");
 
-                                print(selectedValue);
                                 new_product.flag = 11;
                                 reset();
                               });
@@ -268,7 +257,6 @@ class _new_productState extends State<new_product> {
                                   changedvalue = value.toString();
 
                                   checkvalue();
-                                  print(changedvalue);
                                 },
                                 onSaved: (value) {},
                               )),
@@ -298,8 +286,6 @@ class _new_productState extends State<new_product> {
                               if (changedvalue.compareTo("") == 0) {
                                 showAlertDialog(context);
                               } else {
-                                print(user_id);
-
                                 final docRef = await FirebaseFirestore.instance
                                     .collection("Categories")
                                     .doc(selectedValue)
@@ -367,13 +353,12 @@ class _new_productState extends State<new_product> {
                                     (DocumentSnapshot doc) {
                                       final data =
                                           doc.data() as Map<String, dynamic>;
-                                      print(data);
+
                                       pass = data["Qty"];
                                     },
                                     onError: (e) =>
                                         print("Error getting document: $e"),
                                   );
-                                  print(pass);
 
                                   //await userDocRef.set(Qty);
                                   await userDocRef.set({
@@ -386,29 +371,6 @@ class _new_productState extends State<new_product> {
                             child: const Text('Submit'),
                           ),
                           const SizedBox(height: 50),
-                          /*  TextButton(
-                              style: TextButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                                primary: Colors.blue,
-                                textStyle: const TextStyle(fontSize: 16),
-                              ),
-                              onPressed: () {
-                                AddNewDocument.user = user_id;
-                                if (selectedValue == "") {
-                                  showAlertDialog(context);
-                                } else {
-                                  AddNewDocument.cate = selectedValue;
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AddNewDocument()),
-                                  );
-                                }
-                              },
-                              child: const Text('Create a new item'),
-                            ),*/
                         ])
                   ];
                 } else {
