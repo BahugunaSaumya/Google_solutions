@@ -106,9 +106,10 @@ class _HomeScreenState extends State<farmers_home_screen> {
         height: 45,
         child: ClipRRect(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(50),
+
+            topLeft: Radius.circular(90),
             topRight: Radius.circular(
-              50,
+              90,
             ),
           ),
           child: BottomAppBar(
@@ -116,7 +117,7 @@ class _HomeScreenState extends State<farmers_home_screen> {
             elevation: 8,
             shape: CircularNotchedRectangle(),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 IconButton(
                     icon: Icon(
@@ -127,7 +128,7 @@ class _HomeScreenState extends State<farmers_home_screen> {
                       new_product.se = "";
                       refreshUI(0);
                     }),
-                IconButton(
+                /*     IconButton(
                     icon: Icon(Icons.search),
                     color: getColor(1),
                     onPressed: () {
@@ -143,7 +144,7 @@ class _HomeScreenState extends State<farmers_home_screen> {
                     ),
                     onPressed: () {
                       refreshUI(2);
-                    }),
+                    }),*/
                 IconButton(
                     icon: Icon(
                       Icons.person_outline,
