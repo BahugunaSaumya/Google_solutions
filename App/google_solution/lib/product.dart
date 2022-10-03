@@ -1,7 +1,11 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmers_market/home_screens/navigation_screens/myhome.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'firebase_options.dart';
 import 'home_screens/main_view.dart';
 
 void main() {
@@ -39,10 +43,18 @@ DocumentSnapshot notfound(List lis) {
 }
 */
 class product extends StatelessWidget {
+
   @override
   static List li;
   static var he = "";
-
+  static var producers;
+  static String type;
+  static List<DocumentSnapshot> documents;
+  static List<DocumentSnapshot> image;
+  static int selectedIndex;
+  static List<bool> value = new List<bool>.filled(documents.length, false,
+      growable: false);
+  static String category;
   Widget build(BuildContext context) {
     //  MyHomePage.list = list;
     _MyHomePageState.hello = he;
@@ -84,6 +96,15 @@ class MyHomePage extends StatefulWidget {
 
 }
 
+
+List<String> images1 = [
+  "https://5.imimg.com/data5/VK/YR/QZ/SELLER-89932137/savoy-cabbage-500x500.jpg",
+  "https://cdn-prod.medicalnewstoday.com/content/images/articles/284/284823/one-big-cabbage.jpg"
+];
+List<String> images2 = [
+  "https://cdn.harvesttotable.com/htt/2009/01/23181459/Cabbage-bigstock-Salad-Species-That-Includes-Se-251274103-scaled.jpg",
+  "https://extension.umd.edu/sites/extension.umd.edu/files/styles/optimized/public/2021-01/Veg_crop_white-cabbage-2705228_1920_Pixabay.jpg?itok=WhjxU0Ti"
+];
 bool _value = true;
 
 BoxDecoration myBoxDecoration(Color color, Color bg) {
@@ -99,14 +120,68 @@ BoxDecoration myBoxDecoration(Color color, Color bg) {
 class _MyHomePageState extends State<MyHomePage> {
   static var hello = "";
   static List list;
+  String category = product.category;
+  var producers=product.producers;
+  String type = product.type;
+  List<DocumentSnapshot> documents=product.documents;
+  List<DocumentSnapshot> image= product.image;
+  List<bool> value = product.value;
+  PageController pageController;
+  int currentPage;
+  int selectedIndex=product.selectedIndex;
+  List<String> images=images1;
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(viewportFraction: 0.8);
+
+  }
+
+  Future<void> getData2() async {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+
+    var vege = await FirebaseFirestore.instance.collection('Categories').doc
+      (category).collection("Items").doc
+      (type).collection("Producers");
+
+    final doc = await vege.get();
+    documents=doc.docs;
+
+    vege = await FirebaseFirestore.instance.collection('Categories').doc
+      (category).collection("Items").doc
+      (type).collection("Producers").doc(documents[selectedIndex].id).collection("Images");
+    final doc2 = await vege.get();
+    image=doc2.docs;
+
+
+
+  }
+  List<Widget> circles(imagesLength,currentIndex) {
+    return List<Widget>.generate(imagesLength, (index) {
+      return Container(
+        margin: EdgeInsets.all(3),
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(
+            color: currentIndex == index ? Colors.black : Colors.black26,
+            shape: BoxShape.circle),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
 //print(list);
-    DocumentSnapshot url = checkurl(list, hello);
+    print("++++++++++++++++++++");
+    print(image.length);
+
+
+    //DocumentSnapshot url = checkurl(list, hello);
 
     //"https://previews.123rf.com/images/kaymosk/kaymosk1804/kaymosk180400005/99776312-error-404-page-not-found-error-with-glitch-effect-on-screen-vector-illustration-for-your-design.jpg"; //checkurl(list, hello);
     return Scaffold(
+
       appBar: AppBar(
         backgroundColor: Colors.green,
         //leading: IconButton(
@@ -150,15 +225,16 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: ListView(
-          padding: EdgeInsets.zero,
+          //adding: EdgeInsets.zero,
           children: <Widget>[
             Row(
               children: <Widget>[
+
                 Container(
                   padding: EdgeInsets.all(3),
                   color: Colors.green[300],
                   child: Center(
-                    child: Text('Storia'),
+                    child: Text('Store'),
                   ),
                 ),
               ],
@@ -172,7 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.all(3),
                   child: Center(
                     child: Text(
-                      url.id,
+                      type,
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
@@ -185,16 +261,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.all(3),
-                  child: Text(
-                    'Rs 27',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
                   padding: EdgeInsets.all(1),
                   child: Text(
-                    'MRP:',
+                    'MRP: ',
                     style: TextStyle(
                       fontSize: 10,
                       color: Colors.grey,
@@ -202,29 +271,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(1),
+                  padding: EdgeInsets.all(3),
                   child: Text(
-                    ' Rs 30',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey,
-                        decoration: TextDecoration.lineThrough),
+                    "€ "+documents[selectedIndex].get("Price").toString(),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                   ),
                 ),
+
+
                 SizedBox(
                   width: 7,
                 ),
-                Container(
-                  padding: EdgeInsets.all(0.5),
-                  color: Colors.redAccent,
-                  child: Text(
-                    '10% off',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
+
               ],
             ),
             Container(
@@ -234,7 +292,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(
                     fontSize: 10,
                     color: Colors.grey,
-                    decoration: TextDecoration.lineThrough),
+                    ),
               ),
             ),
             SizedBox(
@@ -271,369 +329,97 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ],
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    height: 20,
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3), // changes position of shadow
-                      ),
-                    ], border: Border.all(color: Colors.black12, width: 1)),
-                    child: Image.network(url.get("img")),
-                  ),
-                ),
-                Expanded(
-                  flex: 7,
-                  child: Container(
-                    height: 300,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black12, width: 1)),
-                    child: Image.network(
-                      url.get("img"),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+
             SizedBox(
               height: 10,
             ),
-            Row(
-              children: <Widget>[
-                Container(
-                  decoration: myBoxDecoration(Colors.green, Colors.grey[300]),
-                  margin: EdgeInsets.only(right: 8),
-                  child: Image.network(
-                    url.get("img"),
-                    height: 40,
-                    width: 40,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Container(
-                  decoration:
-                      myBoxDecoration(Colors.grey[300], Colors.grey[300]),
-                  margin: EdgeInsets.only(right: 8),
-                  child: Image.network(
-                    url.get("img"),
-                    height: 40,
-                    width: 40,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Container(
-                  decoration:
-                      myBoxDecoration(Colors.grey[300], Colors.grey[300]),
-                  margin: EdgeInsets.only(right: 8),
-                  child: Image.network(
-                    url.get("img"),
-                    height: 40,
-                    width: 40,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Container(
-                  decoration:
-                      myBoxDecoration(Colors.grey[300], Colors.grey[300]),
-                  margin: EdgeInsets.only(right: 8),
-                  child: Image.network(
-                    url.get("img"),
-                    height: 40,
-                    width: 40,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Container(
-                    decoration:
-                        myBoxDecoration(Colors.grey[300], Colors.grey[300]),
-                    margin: EdgeInsets.only(right: 8),
-                    height: 42,
-                    width: 42,
-                    child: Center(child: Text("+2"))),
-              ],
+            Center(
+
             ),
             Divider(
               height: 28,
               color: Colors.grey,
             ),
+          Column(
+            children:[SizedBox(height: 200, width: MediaQuery.of(context).size
+                .width,
+                child:
+
+                PageView.builder(
+                itemCount: image.length,
+                pageSnapping: true,
+                controller: pageController,
+                onPageChanged: (page) {
+                  print(page);
+                  setState(() {
+                  currentPage = page;
+                  });
+                },
+                itemBuilder: (context,pagePosition){
+                  return Container(
+                      margin: EdgeInsets.all(10),
+                      child: Image.network(image[pagePosition].get("url")));
+                }
+
+            )),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: circles(images.length,currentPage)
+              )
+
+            ]),
+
             Container(
               padding: EdgeInsets.all(3),
               child: Text(
-                'Pack Sizes',
-                style: TextStyle(fontSize: 16),
+                'Farmers:',
+                style: TextStyle(fontSize: 18),
               ),
             ),
-            Container(
-              decoration: myBoxDecoration(Colors.green[200], Colors.white),
-              margin: EdgeInsets.only(right: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(0.5),
-                        color: Colors.redAccent,
-                        child: Text(
-                          '10% off',
-                          style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(2),
-                        child: Text(
-                          '200 ml',
-                          style: TextStyle(
-                            fontSize: 10,
+            Column(
+                children:[SizedBox(height: 200, width: MediaQuery.of(context).size
+                    .width,
+                    child:
+
+                    ListView.builder(
+                        itemCount: documents.length,
+
+                       controller: pageController,
+
+                        itemBuilder: (context,pagePosition){
+
+                        return ListTile(
+                          title: Text(documents[pagePosition].get("Name")),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          'Bottle',
-                          style: TextStyle(fontSize: 10, color: Colors.grey),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(2),
-                        child: Text(
-                          'Rs 27',
-                          style: TextStyle(
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(1),
-                            child: Text(
-                              'MRP:',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(1),
-                            child: Text(
-                              ' Rs 30',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.lineThrough),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            _value = !_value;
+                          tileColor:selectedIndex == pagePosition ? Colors
+                              .lightGreen[100]
+                              : null,
+                          onTap: () async {
+                            selectedIndex=pagePosition;
+                            await getData2();
+                          setState(()  {
+
+
+
                           });
-                        },
-                        child: Container(
-                          height: 25,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            border: Border.all(
-                              color: Colors
-                                  .green, //                   <--- border color
-                              width: 2.0,
-                            ),
-                          ),
-                          child: _value
-                              ? Icon(
-                                  Icons.fiber_manual_record,
-                                  size: 15.0,
-                                  color: Colors.black,
-                                )
-                              : Icon(
-                                  Icons.check_box_outline_blank,
-                                  size: 15.0,
-                                  color: Colors.white,
-                                ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              decoration: myBoxDecoration(Colors.green[200], Colors.white),
-              margin: EdgeInsets.only(right: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(0.5),
-                        color: Colors.redAccent,
-                        child: Text(
-                          'Rs 15 off',
-                          style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(2),
-                        child: Text(
-                          '5x200 ml',
-                          style: TextStyle(
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 5),
-                        child: Text(
-                          '(Multipack)',
-                          style: TextStyle(fontSize: 10, color: Colors.grey),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(2),
-                        child: Text(
-                          'Rs 135',
-                          style: TextStyle(
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(1),
-                            child: Text(
-                              'MRP:',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(1),
-                            child: Text(
-                              ' Rs 150',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.lineThrough),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            _value = !_value;
-                          });
-                        },
-                        child: Container(
-                          height: 25,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            border: Border.all(
-                              color: Colors
-                                  .green, //                   <--- border color
-                              width: 2.0,
-                            ),
-                          ),
-                          child: !_value
-                              ? Icon(
-                                  Icons.fiber_manual_record,
-                                  size: 15.0,
-                                  color: Colors.black,
-                                )
-                              : Icon(
-                                  Icons.check_box_outline_blank,
-                                  size: 15.0,
-                                  color: Colors.white,
-                                ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Container(
-              color: Colors.grey[300],
-              height: 12,
-            ),
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.local_shipping,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("Standard Delivery : Tomorrow Morning"),
-                ),
-              ],
-            ),
-            Container(
-              color: Colors.grey[300],
-              height: 12,
-            ),
-            SizedBox(
-              height: 15,
-            ),
-          ],
-        ),
-      ),
-    );
+                            },
+                      );
+                    }
+    ))]),
+            ElevatedButton(
+
+              onPressed: () { },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green[300],
+                  onPrimary: Colors.black,
+    ),
+              child: const Text('Add to cart'),
+
+
+            ),])));
+
   }
 }

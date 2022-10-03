@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmers_market/product.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
@@ -11,6 +12,11 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:excel/excel.dart';
 import 'package:transparent_image/transparent_image.dart';
+
+import '../../firebase_options.dart';
+import 'myCategories.dart';
+
+
 
 class MyHome extends StatefulWidget {
   @override
@@ -54,13 +60,55 @@ class _MyHomeState extends State<MyHome> {
   );
 
   static List<DocumentSnapshot> documents;
+  static List<DocumentSnapshot> recent;
   Future<void> readExcelFile() async {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
     FirebaseFirestore db = FirebaseFirestore.instance;
     db.settings = const Settings(persistenceEnabled: false);
     final result = await db.collection('Categories').get();
-
+    
     documents = result.docs;
-    print(documents.length);
+    
+    final items = await db.collection("Recent items").get();
+    recent = items.docs;
+
+
+    print(recent.length);
+  }
+  List<DocumentSnapshot> categories;
+  List<DocumentSnapshot> producers;
+  List<DocumentSnapshot> images;
+  var vege,vege2;
+  Future<void> readImage(String Category,String type,String producer) async {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    vege = await FirebaseFirestore.instance.collection('Categories').doc
+      (Category).collection("Items").doc
+      (type).collection("Producers");
+
+    final doc = await vege.get();
+    producers=doc.docs;
+    int c=0;
+    for(var i in producers)
+      {
+        if(i.id.compareTo(producer)==0)
+          {
+            product.selectedIndex=c;
+          }
+        c++;
+      }
+
+    product.category=Category;
+    product.documents=producers;
+    product.type = type;
+    vege2 = await FirebaseFirestore.instance.collection('Categories').doc
+      (Category).collection("Items").doc
+      (type).collection("Producers").doc(producer).collection("Images");
+    final doc2 = await vege2.get();
+    images = doc2.docs;
+    product.producers=vege;
+    print(images.length);
+    product.image = images;
   }
 
   @override
@@ -89,88 +137,20 @@ class _MyHomeState extends State<MyHome> {
                                 style: myStyle,
                               ),
                             ),
-                            SizedBox(
-                              height: 130,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: documents.length,
-                                itemBuilder: (context, index) => Card(
-                                  elevation: 0,
-                                  color: Colors.transparent,
-                                  shape: CircleBorder(),
-                                  //  borderRadius: BorderRadius.all(Radius.circular(100))),
-                                  child: InkWell(
-                                    splashColor: Colors.transparent,
-                                    onTap: () {
-                                      product.li = documents;
-                                      product.he = documents[index].id;
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => product()),
-                                      );
-                                      Fluttertoast.showToast(
-                                          msg: documents[index].id + " Tapped",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 2,
-                                          backgroundColor: Colors.black,
-                                          textColor: Colors.white,
-                                          fontSize: 14.0);
-                                    },
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              shape: BoxShape.circle,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.deepPurple
-                                                      .withOpacity(0.4),
-                                                  spreadRadius: 3,
-                                                  blurRadius: 8,
-                                                  offset: Offset(0,
-                                                      3), // changes position of shadow
-                                                ),
-                                              ],
-                                            ),
-                                            child: CircleAvatar(
-                                              radius: 51,
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 203, 126, 216),
-                                              child: CircleAvatar(
-                                                radius: 50,
-                                                backgroundImage: NetworkImage(
-                                                  documents[index].get("img"),
-                                                ),
-                                              ),
-                                            )),
-                                        Text(
-                                          " ",
-                                          style: TextStyle(fontSize: 3),
-                                        ),
-                                        Text(documents[index].id,
-                                            style: TextStyle(fontSize: 14))
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                            myCategories(documents),
+                            // Recent Items start here
                             Text("    ", style: TextStyle(fontSize: 20)),
                             imageCarousel,
                             Text("  ", style: TextStyle(fontSize: 4)),
                             Container(
                                 height: 300,
                                 child: GridView.builder(
+
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
+                                          childAspectRatio: 0.80,
                                           crossAxisCount: 3),
-                                  itemCount: documents.length,
+                                  itemCount: recent.length,
                                   itemBuilder:
                                       (BuildContext context, int index) => Card(
                                     elevation: 0,
@@ -179,9 +159,11 @@ class _MyHomeState extends State<MyHome> {
                                     //  borderRadius: BorderRadius.all(Radius.circular(100))),
                                     child: InkWell(
                                       splashColor: Colors.transparent,
-                                      onTap: () {
-                                        product.li = documents;
-                                        product.he = documents[index].id;
+                                      onTap: () async {
+                                        await readImage(recent[index].get
+                                          ("Collection"),recent[index].get
+                                          ("Item"),recent[index].get
+                                          ("Producer"));
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -189,7 +171,7 @@ class _MyHomeState extends State<MyHome> {
                                         );
                                         Fluttertoast.showToast(
                                             msg:
-                                                documents[index].id + " Tapped",
+                                                recent[index].id + " Tapped",
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.BOTTOM,
                                             timeInSecForIosWeb: 2,
@@ -198,17 +180,20 @@ class _MyHomeState extends State<MyHome> {
                                             fontSize: 14.0);
                                       },
                                       child: Column(
+
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
+
                                           Container(
+
                                             decoration: BoxDecoration(
                                                 boxShadow: [
                                                   BoxShadow(
                                                     color: Colors.deepPurple
                                                         .withOpacity(0.4),
-                                                    spreadRadius: 2,
+                                                    spreadRadius: 4,
                                                     blurRadius: 8,
                                                     offset: Offset(0,
                                                         3), // changes position of shadow
@@ -233,7 +218,8 @@ class _MyHomeState extends State<MyHome> {
                                               child: FadeInImage.memoryNetwork(
                                                 placeholder: kTransparentImage,
                                                 image:
-                                                    documents[index].get("img"),
+                                                    recent[index].get("Img"),
+
                                                 fit: BoxFit.fill,
                                               ),
                                             ),
@@ -242,8 +228,12 @@ class _MyHomeState extends State<MyHome> {
                                             "  ",
                                             style: TextStyle(fontSize: 6),
                                           ),
-                                          Text(documents[index].id,
-                                              style: TextStyle(fontSize: 12))
+                                          Expanded(child: Text(recent[index].get("Item") +
+                                              "\n" + "Farmer:\n" +
+                                              recent[index].get("Name"),
+                                              style: TextStyle(fontSize: 12))),
+
+
                                         ],
                                       ),
                                     ),
