@@ -1,16 +1,18 @@
-# google_solution
+**UNDERDEVELOPMENT**
 
-A new Flutter project.
 
-## Getting Started
+This is a collaborative project with **Kinjal Bhattacharya**, it is currently named **Farmers market**__
+__
+__
+__
+This project focuses on SDG goal 12.3. To be more specific, About a 3rd of farmers' produce gets wasted due to cosmetic reasons "ugly produce", which is around $161.6 billion worth of waste. [Reference](https://www.mywaste.ie/news/a-scientist-on-the-myth-of-ugly-produce-and-food-waste/).
+we have created a centralized market for the farmers, where they can upload their produce(Vegetables, fruits,e.t.c) and can sell it directly to individual consumers, restaurants, and other Food related businesses that do not care about the cosmetic properties of food as much as supermarkets do, and also can consume the product in a very short amount of time.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+As the App is still in its development phase, there is not an APK for the app, or isn't available in stores yet, but if required can be run by cloning the repository and running the Flutter project
+Alternative method
+if in a case directly running the project does not work, create a new flutter project and them copying everything from this project except android, build, ios, Linux, macOS, web, and windows folder to your projects directory and then write **Flutter pub get install** on the terminal inside the folder where your pubsec.yaml file exists. this method should work.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+more details to be added with time.
